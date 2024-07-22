@@ -1,9 +1,10 @@
 import './App.css';
+import Showcase from './Partials/Showcase';
 
 function App() {
   return (
     <div className="App">
-      <h1>Hello World</h1>
+      <Showcase/>
     </div>
   );
 }

@@ -1,0 +1,5 @@
+#header {
+    display: flex;
+    border-bottom: 1px black solid;
+    background-color: var(--dark-brown);
+}

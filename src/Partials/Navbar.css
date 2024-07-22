@@ -1,0 +1,134 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--primary-bg-color-light);
+    color: var(--primary-text-color-light);
+    position: relative;
+}
+
+.navbar-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 3rem;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.navbar-links ul {
+    list-style: none;
+    display: flex;
+    gap: 3rem;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.navbar-links a {
+    color: var(--primary-text-color-light);
+    text-decoration: none;
+}
+
+.navbar-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.bar {
+    height: 3px;
+    width: 25px;
+    background-color: var(--toggle-bar-color-light);
+    margin: 4px 0;
+    transition: 0.4s;
+    margin-right: 3rem;
+}
+
+@media (max-width: 799px) {
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        padding: 1rem 0;
+        background-color: var(--primary-bg-color-light);
+    }
+
+    .navbar-links.open {
+        display: flex;
+    }
+
+    .navbar-links ul {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .navbar-toggle {
+        display: flex;
+    }
+}
+
+/* TABLET VIEW *******************************************************************************************/
+@media (min-width: 800px) {
+    .navbar-links {
+        display: flex !important;
+    }
+
+    .navbar-toggle {
+        display: none;
+    }
+
+    .navbar-links {
+        margin-right: 3rem;
+    }
+}
+
+@media (min-width: 800px) and (max-width: 1279px) {
+    .navbar {
+        height: 10rem;
+    }
+
+    .navbar-logo {
+        font-size: 40px;
+    }
+
+    .navbar-links {
+        font-size: 30px;
+    }
+}
+
+/* DESKTOP VIEW *******************************************************************************************/
+@media (min-width: 1280px) {
+    .navbar-links a:hover {
+        color: var(--hover-text-color-light);
+        font-weight: 900;
+    }
+}
+
+/* DARK MODE *******************************************************************************************/
+.dark-mode .navbar {
+    background-color: var(--primary-bg-color-dark);
+    color: var(--primary-text-color-dark);
+}
+
+.dark-mode .navbar-links {
+    background-color: var(--primary-bg-color-dark);
+}
+
+.dark-mode .navbar-links a {
+    color: var(--primary-text-color-dark);
+}
+
+.dark-mode .navbar-links a:hover {
+    color: var(--hover-text-color-dark);
+}
+
+.dark-mode .bar {
+    background-color: var(--toggle-bar-color-dark);
+}  
