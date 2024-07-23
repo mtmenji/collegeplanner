@@ -1,0 +1,40 @@
+.footer {
+    background-color: var(--primary-bg-color-light);
+    color: var(--primary-text-color-light);
+    text-align: center;
+}
+
+.footer h1 {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.socials {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.socials img {
+    width: 40px;
+    height: auto;
+    vertical-align: middle;
+}
+
+/* TABLET VIEW *******************************************************************************************/
+@media (min-width: 800px) {
+    .footer {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .socials p {
+        display: none;
+    }
+}
+
+/* DARK MODE *******************************************************************************************/
+.dark-mode .footer {
+    background-color: var(--primary-bg-color-dark);
+    color: var(--primary-text-color-dark);
+}

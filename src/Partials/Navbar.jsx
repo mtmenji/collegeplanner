@@ -3,9 +3,8 @@ import './Navbar.css';
 
 function Navbar() {
 
-    /* Humburger Menu Functionality */
+    /* Humburger Menu Functionality **************************************************************/
     const [isOpen, setIsOpen] = useState(false);
-    const [isDarkMode, setIsDarkMode] = useState(false);
     const menuRef = useRef(null);
 
     const toggleMenu = () => {
@@ -27,13 +26,17 @@ function Navbar() {
         return () => document.removeEventListener('mousedown', handleClickOutside);
       }, []);
 
-  /* Dark Mode Functionality */
-    const toggleDarkMode = () => {
+  /* Dark Mode Functionality ************************************************************************/
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  
+  const toggleDarkMode = () => {
         const body = document.body;
         body.classList.toggle('dark-mode');
         setIsDarkMode(!isDarkMode);
     };
 
+
+  /*** HTML Return Statement**************************************************************************/
   return (
     <nav className="navbar">
       <div className="navbar-logo">College Planner</div>

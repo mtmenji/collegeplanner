@@ -6,6 +6,13 @@ function Showcase() {
     return (
         <div id='showcase'>
             <Header/>
+            <p> TEST </p>
+            <p> TEST </p>
+            <p> TEST </p>
+            <p> TEST </p>
+            <p> TEST </p>
+            <p> TEST </p>
+            <p> TEST </p>
             <Footer/>
         </div>
     )
