@@ -1,26 +1,41 @@
 :root {
-    /* Font */
-    --font-family: 'Poppins', sans-serif;
+  /* Font */
+  --font-family: 'Poppins', sans-serif;
 
-    /* Colors: Background */
-    --tan-brown: #F5EDE0;
-    --light-brown: #E3D5CA;
-    --dark-brown: #D5BDAF;
+  /* Colors: Background */
+  --tan-brown: #F5EDE0;
+  --light-brown: #E3D5CA;
+  --dark-brown: #D5BDAF;
 
-    /* Colors: Pop Up Message*/
-    --light-blue: #BDE0FE;
+  /* Colors: Pop Up Message*/
+  --light-blue: #BDE0FE;
 
-    /* Colors: Button */
-    --light-pink: #FFC8DD;
+  /* Colors: Button */
+  --light-pink: #FFC8DD;
 
-    /* In Use */
-    --primary-bg-color-light: #D5BDAF; /* Light Mode Background Color */
-    --primary-text-color-light: black; /* Light Mode Text Color */
-    --toggle-bar-color-light: black; /* Light Mode Toggle Bar Color */
-    --hover-text-color-light: #333333; /* Light Mode Hover Text Color */
-  
-    --primary-bg-color-dark: #333; /* Dark Mode Background Color */
-    --primary-text-color-dark: #fff; /* Dark Mode Text Color */
-    --toggle-bar-color-dark: #fff; /* Dark Mode Toggle Bar Color */
-    --hover-text-color-dark: #ccc; /* Dark Mode Hover Text Color */
-  }
+  /* In Use */
+  --primary-bg-color-light: #D5BDAF; /* Light Mode Background Color */
+  --primary-text-color-light: black; /* Light Mode Text Color */
+  --toggle-bar-color-light: black; /* Light Mode Toggle Bar Color */
+  --hover-text-color-light: #333333; /* Light Mode Hover Text Color */
+
+  --primary-bg-color-dark: #333; /* Dark Mode Background Color */
+  --primary-text-color-dark: #fff; /* Dark Mode Text Color */
+  --toggle-bar-color-dark: #fff; /* Dark Mode Toggle Bar Color */
+  --hover-text-color-dark: #ccc; /* Dark Mode Hover Text Color */
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensures the container takes at least the full height of the viewport */
+}
+
+.content {
+  flex: 1; /* This allows the content area to expand and push the footer to the bottom */
+}

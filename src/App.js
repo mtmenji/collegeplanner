@@ -23,19 +23,21 @@ function App() {
     <div className="App">
       <AuthProvider>
         <Header/>
-        <Router>
-          <Routes>
-            <Route path='/' element={<Home/>}/>
-            <Route path='/register' element={<Register/>}/>
-            <Route path='/login' element={<Login/>}/>
-            <Route path='/forgot' element={<ForgotPassword/>}/>
-            <Route path='/planners' element={<PrivateRoute><Planners/></PrivateRoute>}/>
-            <Route path='/planners/:id' element={<PrivateRoute><Planner/></PrivateRoute>}/> {/* New Route */}
-            <Route path='/create' element={<PrivateRoute><Create/></PrivateRoute>}/>
-            <Route path='/settings' element={<PrivateRoute><Settings/></PrivateRoute>}/>
-            <Route path='*' element={<NotFound/>}/>
-          </Routes>
-        </Router>
+        <main className='content'>
+          <Router>
+            <Routes>
+              <Route path='/' element={<Home/>}/>
+              <Route path='/register' element={<Register/>}/>
+              <Route path='/login' element={<Login/>}/>
+              <Route path='/forgot' element={<ForgotPassword/>}/>
+              <Route path='/planners' element={<PrivateRoute><Planners/></PrivateRoute>}/>
+              <Route path='/planners/:id' element={<PrivateRoute><Planner/></PrivateRoute>}/> {/* New Route */}
+              <Route path='/create' element={<PrivateRoute><Create/></PrivateRoute>}/>
+              <Route path='/settings' element={<PrivateRoute><Settings/></PrivateRoute>}/>
+              <Route path='*' element={<NotFound/>}/>
+            </Routes>
+          </Router>
+        </main>
         <Footer/>
       </AuthProvider>
     </div>
