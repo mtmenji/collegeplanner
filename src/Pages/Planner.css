@@ -1,0 +1,32 @@
+/* Planner.css */
+.plannerPage {
+    padding: 20px;
+}
+
+.weeksNav {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.weekTab {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    border-right: 1px solid #ddd;
+}
+
+.weekTab:last-child {
+    border-right: none;
+}
+
+.weekTab.active {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+}
