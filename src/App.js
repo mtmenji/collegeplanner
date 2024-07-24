@@ -8,8 +8,9 @@ import Footer from './Partials/Footer';
 
 /*Page Imports*/
 import Home from './Pages/Home';
-import Login from './Pages/Login';
 import Register from './Pages/Register';
+import Login from './Pages/Login';
+import ForgotPassword from './Pages/ForgotPassword';
 import Planners from './Pages/Planners';
 import Create from './Pages/Create';
 import Settings from './Pages/Settings';
@@ -23,8 +24,9 @@ function App() {
         <Router>
           <Routes>
             <Route path='/' element={<Home/>}/>
-            <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
+            <Route path='/login' element={<Login/>}/>
+            <Route path='/forgot' element={<ForgotPassword/>}/>
             <Route path='/planners' element={<Planners/>}/>
             <Route path='/create' element={<Create/>}/>
             <Route path='/settings' element={<Settings/>}/>

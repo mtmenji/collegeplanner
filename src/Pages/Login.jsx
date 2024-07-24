@@ -50,7 +50,7 @@ const SignIn = () => {
             onChange={handleEmailChange}
             /><br />
             
-            <label htmlFor="password">Password:</label><a href="#"> Forgot Password?</a><br />
+            <label htmlFor="password">Password:</label><a href="/forgot"> Forgot Password?</a><br />
             <input
               type="password"
               id="password"
