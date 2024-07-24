@@ -10,23 +10,17 @@ export default function ForgotPassword() {
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(e) {
-        e.preventDefault();
-        console.log('Form submitted');
-        
+        e.preventDefault();        
         try {
             setMessage('');
             setError('');
             setLoading(true);
-            console.log('Email:', emailRef.current.value);
             await resetPassword(emailRef.current.value);
             setMessage('Check your inbox for further instructions.');
-            console.log('Password reset email sent');
         } catch (error) {
-            console.error('Failed to reset password:', error);
             setError('Failed to reset password.');
         }
         setLoading(false);
-        console.log('Loading state:', loading);
     }
 
     return (
