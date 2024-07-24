@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Login.css';
 import { useAuth } from '../Contexts/AuthContext'
 import { useNavigate } from 'react-router-dom';
+import { GoogleButton } from 'react-google-button';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -35,6 +36,21 @@ const SignIn = () => {
     }
   };
 
+  const { googleSignIn } = useAuth();
+  const handleGoogleSignIn = async () => {
+    try {
+      await googleSignIn();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (currentUser != null) {
+      navigate('/planners');
+    }
+  }, [currentUser]);
+
   return (
     <div className="registrationForm">
       <section id="registrationFormBox">
@@ -64,6 +80,7 @@ const SignIn = () => {
           
           <button type="submit">Sign In</button>
         </form>
+        <GoogleButton onClick={handleGoogleSignIn}/>
         <p>Don't have an account? <a href="/register">Register</a></p>
       </section>
     </div>

@@ -2,9 +2,10 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './Contexts/AuthContext';
 
-/*Partial Imports*/
-import Header from './Partials/Header';
-import Footer from './Partials/Footer';
+/*Component Imports*/
+import Header from './Components/Header';
+import Footer from './Components/Footer';
+import PrivateRoute from './Components/PrivateRoute';
 
 /*Page Imports*/
 import Home from './Pages/Home';
@@ -27,9 +28,9 @@ function App() {
             <Route path='/register' element={<Register/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path='/forgot' element={<ForgotPassword/>}/>
-            <Route path='/planners' element={<Planners/>}/>
-            <Route path='/create' element={<Create/>}/>
-            <Route path='/settings' element={<Settings/>}/>
+            <Route path='/planners' element={<PrivateRoute><Planners/></PrivateRoute>}/>
+            <Route path='/create' element={<PrivateRoute><Create/></PrivateRoute>}/>
+            <Route path='/settings' element={<PrivateRoute><Settings/></PrivateRoute>}/>
             <Route path='*' element={<NotFound/>}/>
           </Routes>
         </Router>
