@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Planners.css';
 import { useAuth } from '../Contexts/AuthContext';
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import CreatePlannerForm from '../Components/CreatePlannerForm';
 
 const Planners = () => {
@@ -27,6 +27,19 @@ const Planners = () => {
         }
     }, [currentUser, firestore]);
 
+    const handleDelete = async (id) => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this planner? This action cannot be undone.');
+
+        if (confirmDelete) {
+            try {
+                await deleteDoc(doc(firestore, 'planners', id));
+                setPlanners(planners.filter(planner => planner.id !== id));
+            } catch (error) {
+                console.error('Error deleting planner:', error);
+            }
+        }
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -40,6 +53,7 @@ const Planners = () => {
                 {planners.map(planner => (
                     <li key={planner.id}>
                         <a href={`/planners/${planner.id}`}>Planner {planner.name}</a>
+                        <button onClick={() => handleDelete(planner.id)}>Delete</button>
                     </li>
                 ))}
             </ul>
