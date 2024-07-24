@@ -13,6 +13,7 @@ import Register from './Pages/Register';
 import Login from './Pages/Login';
 import ForgotPassword from './Pages/ForgotPassword';
 import Planners from './Pages/Planners';
+import Planner from './Pages/Planner';
 import Create from './Pages/Create';
 import Settings from './Pages/Settings';
 import NotFound from './Pages/NotFound';
@@ -29,6 +30,7 @@ function App() {
             <Route path='/login' element={<Login/>}/>
             <Route path='/forgot' element={<ForgotPassword/>}/>
             <Route path='/planners' element={<PrivateRoute><Planners/></PrivateRoute>}/>
+            <Route path='/planners/:id' element={<PrivateRoute><Planner/></PrivateRoute>}/> {/* New Route */}
             <Route path='/create' element={<PrivateRoute><Create/></PrivateRoute>}/>
             <Route path='/settings' element={<PrivateRoute><Settings/></PrivateRoute>}/>
             <Route path='*' element={<NotFound/>}/>
