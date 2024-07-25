@@ -1,29 +1,54 @@
-// Planner.jsx
 import React, { useEffect, useState } from 'react';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import PlannerNav from '../Components/PlannerNav'; // Import PlannerNav component
 import './Planner.css'; // Add or update CSS file for styling
 
 const Planner = () => {
     const { id } = useParams();
     const firestore = getFirestore();
     const [planner, setPlanner] = useState(null);
+    const [weeks, setWeeks] = useState([]);
     const [loading, setLoading] = useState(true);
-    const location = useLocation();
-    const currentWeek = location.pathname.split('/').pop(); // Get the current week from URL
 
     useEffect(() => {
         const fetchPlanner = async () => {
             const plannerDoc = doc(firestore, 'planners', id);
             const plannerSnapshot = await getDoc(plannerDoc);
             if (plannerSnapshot.exists()) {
-                setPlanner(plannerSnapshot.data());
+                const plannerData = plannerSnapshot.data();
+                setPlanner(plannerData);
+                calculateWeeks(plannerData.startDate, plannerData.endDate);
             }
             setLoading(false);
         };
 
         fetchPlanner();
     }, [id, firestore]);
+
+    const calculateWeeks = (startDateStr, endDateStr) => {
+        const startDate = new Date(startDateStr);
+        const endDate = new Date(endDateStr);
+
+        let currentWeekStart = new Date(startDate);
+        currentWeekStart.setDate(currentWeekStart.getDate() - currentWeekStart.getDay()); // Set to Sunday of the starting week
+
+        const weeks = [];
+        while (currentWeekStart <= endDate) {
+            const weekEnd = new Date(currentWeekStart);
+            weekEnd.setDate(weekEnd.getDate() + 6); // Set to Saturday of the current week
+
+            weeks.push({
+                weekStart: new Date(currentWeekStart),
+                weekEnd: new Date(weekEnd)
+            });
+
+            // Move to the next week
+            currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+        }
+
+        setWeeks(weeks);
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -35,17 +60,7 @@ const Planner = () => {
 
     return (
         <div className="plannerPage">
-            <nav className="weeksNav">
-                {Array.from({ length: 14 }, (_, i) => i + 1).map(week => (
-                    <Link
-                        key={week}
-                        to={`/planners/${id}/week${week}`}
-                        className={`weekTab ${currentWeek === `week${week}` ? 'active' : ''}`}
-                    >
-                        Week {week}
-                    </Link>
-                ))}
-            </nav>
+            <PlannerNav weeks={weeks} /> {/* Use PlannerNav component */}
             <div className="plannerContent">
                 <h1>{planner.name}</h1>
                 <p><strong>Start Date:</strong> {planner.startDate}</p>

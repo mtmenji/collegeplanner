@@ -1,0 +1,36 @@
+/* PlannerNav.css */
+.plannerNav {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    background-color: #f0f0f0;
+    padding: 10px 0;
+    overflow-x: auto;
+    font-family: sans-serif;
+}
+
+.weekTab {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    border: 1px solid #ccc;
+}
+
+.weekTab.active {
+    background-color: #ddd;
+    font-weight: bold;
+}
+
+.plannerNavDate {
+    display: none;
+}
+
+.weekTab:hover .plannerNavDate {
+    display: block;
+}
+
+.weekTab:hover .plannerNavWeek {
+    display: none;
+}
