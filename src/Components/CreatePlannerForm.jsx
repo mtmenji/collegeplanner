@@ -1,7 +1,9 @@
+// CreatePlannerForm.jsx
 import React, { useState } from 'react';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { useAuth } from '../Contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import ClassForm from '../Components/ClassForm';
 
 const CreatePlannerForm = ({ onClose }) => {
     const { currentUser } = useAuth();
@@ -22,8 +24,7 @@ const CreatePlannerForm = ({ onClose }) => {
         }));
     };
 
-    const handleClassChange = (index, e) => {
-        const { name, value } = e.target;
+    const handleClassChange = (index, name, value) => {
         const newClasses = [...plannerDetails.classes];
         newClasses[index] = {
             ...newClasses[index],
@@ -74,8 +75,6 @@ const CreatePlannerForm = ({ onClose }) => {
         navigate(`/planners/${docRef.id}`);  // Redirect to the new planner page
     };
 
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
     return (
         <form onSubmit={createPlanner} className="plannerForm">
             <div>
@@ -90,118 +89,15 @@ const CreatePlannerForm = ({ onClose }) => {
                 <label>End Date:</label>
                 <input type="date" name="endDate" value={plannerDetails.endDate} onChange={handleChange} required />
             </div>
-            {plannerDetails.classes.map((cls, index) => {
-                const [startHours, startMinutes] = cls.startTime.split(':').map(val => val.split(' ')[0]);
-                const [endHours, endMinutes] = cls.endTime.split(':').map(val => val.split(' ')[0]);
-                const startPeriod = cls.startTime.split(' ')[1];
-                const endPeriod = cls.endTime.split(' ')[1];
-
-                return (
-                    <div key={index} className="class-section">
-                        <h3>Class {index + 1}</h3>
-                        <label>Class Name:</label>
-                        <input type="text" name="className" value={cls.className} onChange={(e) => handleClassChange(index, e)} required />
-                        <label>Course Code:</label>
-                        <input type="text" name="courseCode" value={cls.courseCode} onChange={(e) => handleClassChange(index, e)} required />
-                        <label>Location:</label>
-                        <input type="text" name="location" value={cls.location} onChange={(e) => handleClassChange(index, e)} required />
-
-                        <div>
-                            <label>Start Time:</label>
-                            <input
-                                type="number"
-                                name="startHours"
-                                min="1"
-                                max="12"
-                                value={startHours}
-                                onChange={(e) => {
-                                    const value = Math.max(1, Math.min(12, e.target.value));
-                                    handleClassChange(index, { target: { name: 'startTime', value: `${value}:${startMinutes} ${startPeriod}` } });
-                                }}
-                                required
-                                placeholder="Hour"
-                            />
-                            :
-                            <input
-                                type="number"
-                                name="startMinutes"
-                                min="0"
-                                max="59"
-                                value={startMinutes}
-                                onChange={(e) => {
-                                    const value = Math.max(0, Math.min(59, e.target.value));
-                                    handleClassChange(index, { target: { name: 'startTime', value: `${startHours}:${value} ${startPeriod}` } });
-                                }}
-                                required
-                                placeholder="Minutes"
-                            />
-                            <select
-                                name="startPeriod"
-                                value={startPeriod}
-                                onChange={(e) => handleClassChange(index, { target: { name: 'startTime', value: `${startHours}:${startMinutes} ${e.target.value}` } })}
-                            >
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label>End Time:</label>
-                            <input
-                                type="number"
-                                name="endHours"
-                                min="1"
-                                max="12"
-                                value={endHours}
-                                onChange={(e) => {
-                                    const value = Math.max(1, Math.min(12, e.target.value));
-                                    handleClassChange(index, { target: { name: 'endTime', value: `${value}:${endMinutes} ${endPeriod}` } });
-                                }}
-                                required
-                                placeholder="Hour"
-                            />
-                            :
-                            <input
-                                type="number"
-                                name="endMinutes"
-                                min="0"
-                                max="59"
-                                value={endMinutes}
-                                onChange={(e) => {
-                                    const value = Math.max(0, Math.min(59, e.target.value));
-                                    handleClassChange(index, { target: { name: 'endTime', value: `${endHours}:${value} ${endPeriod}` } });
-                                }}
-                                required
-                                placeholder="Minutes"
-                            />
-                            <select
-                                name="endPeriod"
-                                value={endPeriod}
-                                onChange={(e) => handleClassChange(index, { target: { name: 'endTime', value: `${endHours}:${endMinutes} ${e.target.value}` } })}
-                            >
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                            </select>
-                        </div>
-
-                        <fieldset>
-                            <legend>Meeting Days:</legend>
-                            {daysOfWeek.map(day => (
-                                <div key={day}>
-                                    <input
-                                        type="checkbox"
-                                        id={day}
-                                        checked={cls.meetingDays.includes(day)}
-                                        onChange={() => handleMeetingDayChange(index, day)}
-                                    />
-                                    <label htmlFor={day}>{day}</label>
-                                </div>
-                            ))}
-                        </fieldset>
-                        <button type="button" onClick={() => removeClass(index)}>Remove Class</button>
-                    </div>
-                );
-            })}
+            {plannerDetails.classes.map((cls, index) => (
+                <ClassForm
+                    key={index}
+                    classDetails={cls}
+                    onChange={(name, value) => handleClassChange(index, name, value)}
+                    onMeetingDayChange={(day) => handleMeetingDayChange(index, day)}
+                    onRemove={() => removeClass(index)}
+                />
+            ))}
             <button type="button" onClick={addClass}>Add Another Class</button>
             <button type="submit">Save Planner</button>
         </form>
