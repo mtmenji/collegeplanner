@@ -47,7 +47,18 @@ const PlannerSettings = () => {
         updatedClasses[index] = updatedClass;
         const plannerDoc = doc(firestore, 'planners', id);
         await updateDoc(plannerDoc, { classes: updatedClasses });
-        alert('Class updated successfully!'); // Alert message
+        alert('Class updated successfully!');
+    };
+
+    const handleDeleteClass = async (index) => {
+        if (window.confirm('Are you sure you want to delete this class?')) {
+            const updatedClasses = [...planner.classes];
+            updatedClasses.splice(index, 1);
+            const plannerDoc = doc(firestore, 'planners', id);
+            await updateDoc(plannerDoc, { classes: updatedClasses });
+            setSelectedClassIndex(Math.max(0, index - 1)); // Reset the selected class index
+            alert('Class deleted successfully!');
+        }
     };
 
     const handleChange = (e) => {
@@ -65,7 +76,7 @@ const PlannerSettings = () => {
             startDate: plannerDetails.startDate,
             endDate: plannerDetails.endDate
         });
-        alert('Planner details updated successfully!'); // Alert message
+        alert('Planner details updated successfully!');
     };
 
     return (
@@ -110,6 +121,7 @@ const PlannerSettings = () => {
                         selectedClassIndex={selectedClassIndex}
                         onSelectClass={handleSelectClass}
                         onUpdateClass={handleUpdateClass}
+                        onDeleteClass={handleDeleteClass}
                     />
                 )}
             </div>

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import ClassForm from './ClassForm';
 
-const ClassDropdown = ({ classes, selectedClassIndex, onSelectClass, onUpdateClass }) => {
+const ClassDropdown = ({ classes, selectedClassIndex, onSelectClass, onUpdateClass, onDeleteClass }) => {
     const [classDetails, setClassDetails] = useState(classes[selectedClassIndex]);
 
     const handleSelectChange = (event) => {
@@ -26,6 +26,10 @@ const ClassDropdown = ({ classes, selectedClassIndex, onSelectClass, onUpdateCla
         onUpdateClass(selectedClassIndex, classDetails);
     };
 
+    const handleDelete = () => {
+        onDeleteClass(selectedClassIndex);
+    };
+
     return (
         <div>
             <label htmlFor="class-select">Select a class: </label>
@@ -45,6 +49,7 @@ const ClassDropdown = ({ classes, selectedClassIndex, onSelectClass, onUpdateCla
                     onMeetingDayChange={handleMeetingDayChange}
                 />
                 <button onClick={handleSave}>Save</button>
+                <button onClick={handleDelete}>Delete</button>
             </div>
         </div>
     );
