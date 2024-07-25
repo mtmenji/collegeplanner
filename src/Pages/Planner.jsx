@@ -1,54 +1,13 @@
-import React, { useEffect, useState } from 'react';
+// Planner.jsx
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import PlannerNav from '../Components/PlannerNav'; // Import PlannerNav component
 import './Planner.css'; // Add or update CSS file for styling
+import usePlanner from '../Hooks/usePlanner'; // Import usePlanner hook
 
 const Planner = () => {
     const { id } = useParams();
-    const firestore = getFirestore();
-    const [planner, setPlanner] = useState(null);
-    const [weeks, setWeeks] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchPlanner = async () => {
-            const plannerDoc = doc(firestore, 'planners', id);
-            const plannerSnapshot = await getDoc(plannerDoc);
-            if (plannerSnapshot.exists()) {
-                const plannerData = plannerSnapshot.data();
-                setPlanner(plannerData);
-                calculateWeeks(plannerData.startDate, plannerData.endDate);
-            }
-            setLoading(false);
-        };
-
-        fetchPlanner();
-    }, [id, firestore]);
-
-    const calculateWeeks = (startDateStr, endDateStr) => {
-        const startDate = new Date(startDateStr);
-        const endDate = new Date(endDateStr);
-
-        let currentWeekStart = new Date(startDate);
-        currentWeekStart.setDate(currentWeekStart.getDate() - currentWeekStart.getDay()); // Set to Sunday of the starting week
-
-        const weeks = [];
-        while (currentWeekStart <= endDate) {
-            const weekEnd = new Date(currentWeekStart);
-            weekEnd.setDate(weekEnd.getDate() + 6); // Set to Saturday of the current week
-
-            weeks.push({
-                weekStart: new Date(currentWeekStart),
-                weekEnd: new Date(weekEnd)
-            });
-
-            // Move to the next week
-            currentWeekStart.setDate(currentWeekStart.getDate() + 7);
-        }
-
-        setWeeks(weeks);
-    };
+    const { planner, loading } = usePlanner(id);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -60,7 +19,7 @@ const Planner = () => {
 
     return (
         <div className="plannerPage">
-            <PlannerNav weeks={weeks} /> {/* Use PlannerNav component */}
+            <PlannerNav /> {/* Use PlannerNav component */}
             <div className="plannerContent">
                 <h1>{planner.name}</h1>
                 <p><strong>Start Date:</strong> {planner.startDate}</p>
