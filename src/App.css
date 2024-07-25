@@ -15,11 +15,13 @@
 
   /* In Use */
   --primary-bg-color-light: #D5BDAF; /* Light Mode Background Color */
+  --secondary-bg-color-light: #E9DCD3; /* Light Mode Background Color */
   --primary-text-color-light: black; /* Light Mode Text Color */
   --toggle-bar-color-light: black; /* Light Mode Toggle Bar Color */
   --hover-text-color-light: #333333; /* Light Mode Hover Text Color */
 
   --primary-bg-color-dark: #333; /* Dark Mode Background Color */
+  --secondary-bg-color-dark: #666; /* Dark Mode Background Color */
   --primary-text-color-dark: #fff; /* Dark Mode Text Color */
   --toggle-bar-color-dark: #fff; /* Dark Mode Toggle Bar Color */
   --hover-text-color-dark: #ccc; /* Dark Mode Hover Text Color */

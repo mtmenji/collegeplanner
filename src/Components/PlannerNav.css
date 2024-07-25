@@ -2,8 +2,7 @@
     display: flex;
     justify-content: space-around;
     width: 100%;
-    background-color: #f0f0f0;
-    padding: 10px 0;
+    background-color: var(--secondary-bg-color-light);
     overflow-x: auto;
     font-family: sans-serif;
 }
@@ -14,12 +13,16 @@
     padding: 10px;
     text-decoration: none;
     color: black;
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
 }
 
 .plannerTab.active, .weekTab.active {
-    background-color: #ddd;
+    background-color: #D4A69E;
     font-weight: bold;
+}
+
+.plannerTab:hover, .weekTab:hover {
+    background-color: #d2b4ae;
 }
 
 .weekTab {
