@@ -10,3 +10,7 @@
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+
+.add-class-form button {
+    margin-right: 10px;
+}

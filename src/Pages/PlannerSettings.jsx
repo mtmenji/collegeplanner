@@ -122,6 +122,18 @@ const PlannerSettings = () => {
         }));
     };
 
+    const handleCancelAddClass = () => {
+        setIsAddingClass(false);
+        setNewClassDetails({
+            className: '',
+            courseCode: '',
+            location: '',
+            startTime: '',
+            endTime: '',
+            meetingDays: []
+        });
+    };
+
     return (
         <div className="plannerSettingsPage">
             <PlannerNav />
@@ -177,6 +189,7 @@ const PlannerSettings = () => {
                             onMeetingDayChange={handleNewClassMeetingDayChange}
                         />
                         <button onClick={handleAddClass}>Save</button>
+                        <button onClick={handleCancelAddClass}>Cancel</button>
                     </div>
                 )}
             </div>
