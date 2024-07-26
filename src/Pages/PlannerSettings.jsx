@@ -4,7 +4,7 @@ import { getFirestore, doc, updateDoc } from 'firebase/firestore';
 import PlannerNav from '../Components/PlannerNav';
 import './PlannerSettings.css';
 import usePlanner from '../Hooks/usePlanner';
-import ClassDropdown from '../Components/ClassDropdown';
+import EditClassForm from '../Components/EditClassForm';
 import ClassForm from '../Components/ClassForm';
 
 const PlannerSettings = () => {
@@ -178,7 +178,7 @@ const PlannerSettings = () => {
                 <button onClick={handleSavePlannerDetails}>Save Planner Details</button>
                 <hr/>
                 {planner.classes && isEditingClass && (
-                    <ClassDropdown
+                    <EditClassForm
                         classes={planner.classes}
                         selectedClassIndex={selectedClassIndex}
                         onSelectClass={handleSelectClass}

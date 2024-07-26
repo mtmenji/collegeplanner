@@ -1,8 +1,7 @@
-// components/ClassDropdown.jsx
 import React, { useState, useEffect } from 'react';
 import ClassForm from './ClassForm';
 
-const ClassDropdown = ({ classes, selectedClassIndex, onSelectClass, onUpdateClass, onDeleteClass }) => {
+const EditClassForm = ({ classes, selectedClassIndex, onSelectClass, onUpdateClass, onDeleteClass }) => {
     const [classDetails, setClassDetails] = useState(classes[selectedClassIndex] || {});
 
     useEffect(() => {
@@ -64,4 +63,4 @@ const ClassDropdown = ({ classes, selectedClassIndex, onSelectClass, onUpdateCla
     );
 };
 
-export default ClassDropdown;
+export default EditClassForm;
