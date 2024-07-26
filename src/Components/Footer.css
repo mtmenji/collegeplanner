@@ -22,7 +22,7 @@
 }
 
 /* TABLET VIEW *******************************************************************************************/
-@media (min-width: 800px) {
+@media (min-width: 950px) {
     .footer {
         display: flex;
         justify-content: space-around;

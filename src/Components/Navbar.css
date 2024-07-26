@@ -75,7 +75,7 @@
 }
 
 /* TABLET VIEW *******************************************************************************************/
-@media (min-width: 800px) {
+@media (min-width: 950px) {
     .navbar-links {
         display: flex !important;
     }
@@ -89,7 +89,7 @@
     }
 }
 
-@media (min-width: 800px) and (max-width: 1279px) {
+@media (min-width: 950px) and (max-width: 1279px) {
     .navbar {
         height: 10rem;
     }
