@@ -1,38 +1,3 @@
-/* .plannerNav {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    background-color: var(--secondary-bg-color-light);
-    overflow-x: auto;
-    font-family: sans-serif;
-}
-
-.plannerTab, .weekTab {
-    flex: 1;
-    text-align: center;
-    padding: 10px;
-    text-decoration: none;
-    color: black;
-}
-
-.plannerTab.active, .weekTab.active {
-    background-color: #D4A69E;
-    font-weight: bold;
-}
-
-.plannerTab:hover, .weekTab:hover {
-    background-color: #d2b4ae;
-}
-
-.weekTab:hover .plannerNavDate {
-    display: block;
-}
-
-.plannerNavDate {
-    display: none;
-} */
-
-/* Default mobile-first styles */
 .plannerNav {
     display: flex;
     flex-direction: column;
@@ -58,18 +23,17 @@
 }
 
 .dropdown-menu {
-    display: none; /* Hide by default on mobile */
+    display: none;
     flex-direction: column;
     width: 100%;
     position: absolute;
-    top: 50px; /* Adjust based on the height of the dropdown-toggle */
+    top: 50px;
     left: 0;
     background-color: var(--secondary-bg-color-light);
-    border-top: 1px solid #ccc;
 }
 
 .dropdown-menu.show {
-    display: flex; /* Show when toggled */
+    display: flex;
 }
 
 .dropdown-menu a {
@@ -85,32 +49,68 @@
     font-weight: bold;
 }
 
-.dropdown-menu a:hover {
-    background-color: #d2b4ae;
-}
-
-/* Desktop styles */
+/* DESKTOP VIEW *******************************************************************************************/
 @media (min-width: 1280px) {
     .plannerNav {
         flex-direction: row;
         align-items: center;
     }
 
+    .dropdown-menu {
+        flex: 1;
+        justify-content: space-around;
+    }
+
     .dropdown-toggle {
-        display: none; /* Hide dropdown toggle on larger screens */
+        display: none;
     }
 
     .dropdown-menu {
-        display: flex; /* Show menu items horizontally */
+        display: flex;
         flex-direction: row;
-        position: static; /* Reset position */
+        position: static;
         width: auto;
-        border-top: none;
     }
 
     .dropdown-menu a {
         padding: 10px;
         text-align: center;
         display: block;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: #d2b4ae;
+    }
+}
+
+/* DARK MODE *******************************************************************************************/
+.dark-mode .plannerNav {
+    background-color: var(--secondary-bg-color-dark);
+}
+
+.dark-mode .plannerNav button {
+    color: white;
+}
+
+.dark-mode .dropdown-toggle {
+    background-color: var(--secondary-bg-color-dark);
+}
+
+.dark-mode .dropdown-menu {
+    background-color: var(--secondary-bg-color-dark);
+}
+
+
+.dark-mode .dropdown-menu a {
+    color: white;
+}
+
+.dark-mode .dropdown-menu a.active {
+    background-color: #888;
+}
+
+@media (min-width: 1280px) {
+    .dark-mode .dropdown-menu a:hover {
+        background-color: #777;
     }
 }
