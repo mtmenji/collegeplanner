@@ -10,7 +10,7 @@ import ClassForm from '../Components/ClassForm';
 
 const PlannerSettings = () => {
     const { id } = useParams();
-    const { planner, loading } = usePlanner(id);
+    const { planner, loading, refetch } = usePlanner(id); // Add refetch
     const firestore = getFirestore();
 
     const [plannerDetails, setPlannerDetails] = useState({
@@ -57,6 +57,7 @@ const PlannerSettings = () => {
         updatedClasses[index] = updatedClass;
         const plannerDoc = doc(firestore, 'planners', id);
         await updateDoc(plannerDoc, { classes: updatedClasses });
+        refetch(); // Trigger refetch
         alert('Class updated successfully!');
     };
 
@@ -67,6 +68,7 @@ const PlannerSettings = () => {
             const plannerDoc = doc(firestore, 'planners', id);
             await updateDoc(plannerDoc, { classes: updatedClasses });
             setSelectedClassIndex(Math.max(0, index - 1)); // Reset the selected class index
+            refetch(); // Trigger refetch
             alert('Class deleted successfully!');
         }
     };
@@ -87,6 +89,7 @@ const PlannerSettings = () => {
             endDate: plannerDetails.endDate
         });
         alert('Planner details updated successfully!');
+        refetch(); //Trigger refetch to PlannerNav
     };
 
     const handleAddClass = async () => {
@@ -102,6 +105,7 @@ const PlannerSettings = () => {
             endTime: '',
             meetingDays: []
         });
+        refetch(); // Trigger refetch
         alert('Class added successfully!');
     };
 
@@ -136,7 +140,7 @@ const PlannerSettings = () => {
 
     return (
         <div className="plannerSettingsPage">
-            <PlannerNav />
+            <PlannerNav refetch={refetch}/>
             <h1>Settings for Planner {plannerDetails.name}</h1>
             <div className="plannerSettingsContent">
                 <div>

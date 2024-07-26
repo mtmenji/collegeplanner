@@ -1,9 +1,10 @@
+// PlannerNav.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import './PlannerNav.css'; // Add or update CSS file for styling
 
-const PlannerNav = () => {
+const PlannerNav = ({ refetch }) => { // Accept refetch as a prop
     const { id } = useParams();
     const location = useLocation();
     const currentWeek = location.pathname.split('/').pop(); // Get the current week from URL
@@ -24,7 +25,7 @@ const PlannerNav = () => {
         };
 
         fetchPlanner();
-    }, [id]);
+    }, [id, refetch]); // Include refetch in dependencies
 
     const calculateWeeks = (startDateStr, endDateStr) => {
         const startDate = new Date(startDateStr);

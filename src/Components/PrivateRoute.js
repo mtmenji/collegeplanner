@@ -4,7 +4,7 @@ import { useAuth } from '../Contexts/AuthContext'
 
 const PrivateRoute = ({children}) => {
     const {currentUser} = useAuth();
-    return currentUser !== undefined ? (currentUser ? children : <Navigate to='/'/>) : null;
+    return currentUser !== undefined ? (currentUser ? children : <Navigate to='/login'/>) : null;
 }
 
 export default PrivateRoute
