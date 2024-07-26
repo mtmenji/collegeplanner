@@ -1,0 +1,15 @@
+/* Week.css */
+
+.weekDates {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.weekDate {
+    text-align: center;
+}
+
+.plannerContent {
+    margin-top: 20px;
+}
