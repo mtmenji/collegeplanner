@@ -1,14 +1,21 @@
 // components/ClassDropdown.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ClassForm from './ClassForm';
 
 const ClassDropdown = ({ classes, selectedClassIndex, onSelectClass, onUpdateClass, onDeleteClass }) => {
-    const [classDetails, setClassDetails] = useState(classes[selectedClassIndex]);
+    const [classDetails, setClassDetails] = useState(classes[selectedClassIndex] || {});
+
+    useEffect(() => {
+        setClassDetails(classes[selectedClassIndex] || {});
+    }, [selectedClassIndex, classes]);
+
+    if (!classes || classes.length === 0) {
+        return <div>No classes available.</div>;
+    }
 
     const handleSelectChange = (event) => {
         const index = event.target.value;
         onSelectClass(index);
-        setClassDetails(classes[index]);
     };
 
     const handleChange = (name, value) => {
@@ -41,16 +48,18 @@ const ClassDropdown = ({ classes, selectedClassIndex, onSelectClass, onUpdateCla
                 ))}
             </select>
 
-            <div>
-                <h2>Class Details</h2>
-                <ClassForm
-                    classDetails={classDetails}
-                    onChange={handleChange}
-                    onMeetingDayChange={handleMeetingDayChange}
-                />
-                <button onClick={handleSave}>Save</button>
-                <button onClick={handleDelete}>Delete</button>
-            </div>
+            {classDetails && (
+                <div>
+                    <h2>Class Details</h2>
+                    <ClassForm
+                        classDetails={classDetails}
+                        onChange={handleChange}
+                        onMeetingDayChange={handleMeetingDayChange}
+                    />
+                    <button onClick={handleSave}>Save</button>
+                    <button onClick={handleDelete}>Delete</button>
+                </div>
+            )}
         </div>
     );
 };
