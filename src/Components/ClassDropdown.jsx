@@ -39,6 +39,7 @@ const ClassDropdown = ({ classes, selectedClassIndex, onSelectClass, onUpdateCla
 
     return (
         <div>
+            <h1>Edit Class Details</h1>
             <label htmlFor="class-select">Select a class: </label>
             <select id="class-select" value={selectedClassIndex} onChange={handleSelectChange}>
                 {classes.map((cls, index) => (
@@ -50,14 +51,13 @@ const ClassDropdown = ({ classes, selectedClassIndex, onSelectClass, onUpdateCla
 
             {classDetails && (
                 <div>
-                    <h2>Class Details</h2>
                     <ClassForm
                         classDetails={classDetails}
                         onChange={handleChange}
                         onMeetingDayChange={handleMeetingDayChange}
                     />
-                    <button onClick={handleSave}>Save</button>
-                    <button onClick={handleDelete}>Delete</button>
+                    <button onClick={handleSave}>Save Changes to {classDetails.courseCode}</button>
+                    <button onClick={handleDelete}>Delete {classDetails.courseCode}</button>
                 </div>
             )}
         </div>

@@ -1,4 +1,3 @@
-// PlannerSettings.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getFirestore, doc, updateDoc } from 'firebase/firestore';
@@ -10,7 +9,7 @@ import ClassForm from '../Components/ClassForm';
 
 const PlannerSettings = () => {
     const { id } = useParams();
-    const { planner, loading, refetch } = usePlanner(id); // Add refetch
+    const { planner, loading, refetch } = usePlanner(id);
     const firestore = getFirestore();
 
     const [plannerDetails, setPlannerDetails] = useState({
@@ -21,7 +20,7 @@ const PlannerSettings = () => {
 
     const [selectedClassIndex, setSelectedClassIndex] = useState(0);
     const [isAddingClass, setIsAddingClass] = useState(false);
-    const [isEditingClass, setIsEditingClass] = useState(true); // State to track form visibility
+    const [isEditingClass, setIsEditingClass] = useState(true);
     const [newClassDetails, setNewClassDetails] = useState({
         className: '',
         courseCode: '',
@@ -58,7 +57,7 @@ const PlannerSettings = () => {
         updatedClasses[index] = updatedClass;
         const plannerDoc = doc(firestore, 'planners', id);
         await updateDoc(plannerDoc, { classes: updatedClasses });
-        refetch(); // Trigger refetch
+        refetch();
         alert('Class updated successfully!');
     };
 
@@ -68,8 +67,8 @@ const PlannerSettings = () => {
             updatedClasses.splice(index, 1);
             const plannerDoc = doc(firestore, 'planners', id);
             await updateDoc(plannerDoc, { classes: updatedClasses });
-            setSelectedClassIndex(Math.max(0, index - 1)); // Reset the selected class index
-            refetch(); // Trigger refetch
+            setSelectedClassIndex(Math.max(0, index - 1));
+            refetch();
             alert('Class deleted successfully!');
         }
     };
@@ -90,7 +89,7 @@ const PlannerSettings = () => {
             endDate: plannerDetails.endDate
         });
         alert('Planner details updated successfully!');
-        refetch(); // Trigger refetch to PlannerNav
+        refetch();
     };
 
     const handleAddClass = async () => {
@@ -98,7 +97,7 @@ const PlannerSettings = () => {
         const plannerDoc = doc(firestore, 'planners', id);
         await updateDoc(plannerDoc, { classes: updatedClasses });
         setIsAddingClass(false);
-        setIsEditingClass(true); // Show the edit class form again
+        setIsEditingClass(true);
         setNewClassDetails({
             className: '',
             courseCode: '',
@@ -107,7 +106,7 @@ const PlannerSettings = () => {
             endTime: '',
             meetingDays: []
         });
-        refetch(); // Trigger refetch
+        refetch();
         alert('Class added successfully!');
     };
 
@@ -130,7 +129,7 @@ const PlannerSettings = () => {
 
     const handleCancelAddClass = () => {
         setIsAddingClass(false);
-        setIsEditingClass(true); // Show the edit class form again
+        setIsEditingClass(true);
         setNewClassDetails({
             className: '',
             courseCode: '',
@@ -177,6 +176,7 @@ const PlannerSettings = () => {
                     />
                 </div>
                 <button onClick={handleSavePlannerDetails}>Save Planner Details</button>
+                <hr/>
                 {planner.classes && isEditingClass && (
                     <ClassDropdown
                         classes={planner.classes}
@@ -186,10 +186,12 @@ const PlannerSettings = () => {
                         onDeleteClass={handleDeleteClass}
                     />
                 )}
-                <button className="add-class-button" onClick={() => { setIsAddingClass(true); setIsEditingClass(false); }}>Add a Class</button>
+                {!isAddingClass && (
+                    <button className="add-class-button" onClick={() => { setIsAddingClass(true); setIsEditingClass(false); }}>Add a Class</button>
+                )}
                 {isAddingClass && (
                     <div className="add-class-form">
-                        <h2>Add a Class Form</h2>
+                        <h1>Add a Class Form</h1>
                         <ClassForm
                             classDetails={newClassDetails}
                             onChange={handleNewClassChange}
