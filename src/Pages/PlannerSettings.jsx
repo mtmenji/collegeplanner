@@ -191,7 +191,7 @@ const PlannerSettings = () => {
                 )}
                 {isAddingClass && (
                     <div className="add-class-form">
-                        <h1>Add a Class Form</h1>
+                        <h1>Add a Class</h1>
                         <ClassForm
                             classDetails={newClassDetails}
                             onChange={handleNewClassChange}
