@@ -1,4 +1,4 @@
-.plannerNav {
+/* .plannerNav {
     display: flex;
     justify-content: space-around;
     width: 100%;
@@ -13,7 +13,6 @@
     padding: 10px;
     text-decoration: none;
     color: black;
-    /* border: 1px solid #ccc; */
 }
 
 .plannerTab.active, .weekTab.active {
@@ -25,14 +24,93 @@
     background-color: #d2b4ae;
 }
 
-.weekTab {
-    /* Week tab specific styles */
-}
-
 .weekTab:hover .plannerNavDate {
     display: block;
 }
 
 .plannerNavDate {
     display: none;
+} */
+
+/* Default mobile-first styles */
+.plannerNav {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: var(--secondary-bg-color-light);
+    font-family: sans-serif;
+    position: relative;
+}
+
+.dropdown-toggle {
+    display: block;
+    padding: 10px;
+    background-color: var(--secondary-bg-color-light);
+    border: none;
+    font-family: sans-serif;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+}
+
+.dropdown-arrow {
+    margin-left: 5px;
+}
+
+.dropdown-menu {
+    display: none; /* Hide by default on mobile */
+    flex-direction: column;
+    width: 100%;
+    position: absolute;
+    top: 50px; /* Adjust based on the height of the dropdown-toggle */
+    left: 0;
+    background-color: var(--secondary-bg-color-light);
+    border-top: 1px solid #ccc;
+}
+
+.dropdown-menu.show {
+    display: flex; /* Show when toggled */
+}
+
+.dropdown-menu a {
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+
+.dropdown-menu a.active {
+    background-color: #D4A69E;
+    font-weight: bold;
+}
+
+.dropdown-menu a:hover {
+    background-color: #d2b4ae;
+}
+
+/* Desktop styles */
+@media (min-width: 1280px) {
+    .plannerNav {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .dropdown-toggle {
+        display: none; /* Hide dropdown toggle on larger screens */
+    }
+
+    .dropdown-menu {
+        display: flex; /* Show menu items horizontally */
+        flex-direction: row;
+        position: static; /* Reset position */
+        width: auto;
+        border-top: none;
+    }
+
+    .dropdown-menu a {
+        padding: 10px;
+        text-align: center;
+        display: block;
+    }
 }

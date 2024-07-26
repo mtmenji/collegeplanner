@@ -1,16 +1,19 @@
-// PlannerNav.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import './PlannerNav.css'; // Add or update CSS file for styling
+import './PlannerNav.css'; // Ensure the CSS file is updated accordingly
 
-const PlannerNav = ({ refetch }) => { // Accept refetch as a prop
+const PlannerNav = ({ refetch }) => {
     const { id } = useParams();
     const location = useLocation();
-    const currentWeek = location.pathname.split('/').pop(); // Get the current week from URL
+    const currentPath = location.pathname;
+    const currentWeek = currentPath.split('/').pop(); // Get the current week from URL
+
     const [hoveredWeek, setHoveredWeek] = useState(null);
     const [weeks, setWeeks] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [selectedOption, setSelectedOption] = useState('Menu');
 
     useEffect(() => {
         const fetchPlanner = async () => {
@@ -25,7 +28,7 @@ const PlannerNav = ({ refetch }) => { // Accept refetch as a prop
         };
 
         fetchPlanner();
-    }, [id, refetch]); // Include refetch in dependencies
+    }, [id, refetch]);
 
     const calculateWeeks = (startDateStr, endDateStr) => {
         const startDate = new Date(startDateStr);
@@ -66,39 +69,50 @@ const PlannerNav = ({ refetch }) => { // Accept refetch as a prop
         return `${startDate} - ${endDate}`;
     };
 
+    const handleMenuClick = (option) => {
+        setSelectedOption(option);
+        setMenuOpen(!menuOpen); // Toggle the menu open/closed state
+    };
+
     return (
         <nav className="plannerNav">
-            <Link
-                to={`/planners/${id}/calendar`}
-                className={`plannerTab ${location.pathname.endsWith('calendar') ? 'active' : ''}`}
-            >
-                Calendar
-            </Link>
-
-            {weeks.map((week, index) => (
+            <button className="dropdown-toggle" onClick={() => handleMenuClick(selectedOption)}>
+                {selectedOption} <span className="dropdown-arrow">▼</span>
+            </button>
+            <div className={`dropdown-menu ${menuOpen ? 'show' : ''}`}>
                 <Link
-                    key={index}
-                    to={`/planners/${id}/week${index + 1}`}
-                    className={`weekTab ${currentWeek === `week${index + 1}` ? 'active' : ''}`}
-                    onMouseEnter={() => setHoveredWeek(index)}
-                    onMouseLeave={() => setHoveredWeek(null)}
+                    to={`/planners/${id}/calendar`}
+                    onClick={() => handleMenuClick('Calendar')}
+                    className={`plannerTab ${currentPath.endsWith('calendar') ? 'active' : ''}`}
                 >
-                    {hoveredWeek === index ? (
-                        <div className='plannerNavDate'>
-                            ({formatDateRange(week.weekStart, week.weekEnd)})
-                        </div>
-                    ) : (
-                        `Week ${index + 1}`
-                    )}
+                    Calendar
                 </Link>
-            ))}
-
-            <Link
-                to={`/planners/${id}/settings`}
-                className={`plannerTab ${location.pathname.endsWith('settings') ? 'active' : ''}`}
-            >
-                Settings
-            </Link>
+                {weeks.map((week, index) => (
+                    <Link
+                        key={index}
+                        to={`/planners/${id}/week${index + 1}`}
+                        onClick={() => handleMenuClick(`Week ${index + 1}`)}
+                        className={`weekTab ${currentWeek === `week${index + 1}` ? 'active' : ''}`}
+                        onMouseEnter={() => setHoveredWeek(index)}
+                        onMouseLeave={() => setHoveredWeek(null)}
+                    >
+                        {hoveredWeek === index ? (
+                            <div className='plannerNavDate'>
+                                ({formatDateRange(week.weekStart, week.weekEnd)})
+                            </div>
+                        ) : (
+                            `Week ${index + 1}`
+                        )}
+                    </Link>
+                ))}
+                <Link
+                    to={`/planners/${id}/settings`}
+                    onClick={() => handleMenuClick('Settings')}
+                    className={`plannerTab ${currentPath.endsWith('settings') ? 'active' : ''}`}
+                >
+                    Settings
+                </Link>
+            </div>
         </nav>
     );
 };
