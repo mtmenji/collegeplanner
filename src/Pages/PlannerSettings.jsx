@@ -21,6 +21,7 @@ const PlannerSettings = () => {
 
     const [selectedClassIndex, setSelectedClassIndex] = useState(0);
     const [isAddingClass, setIsAddingClass] = useState(false);
+    const [isEditingClass, setIsEditingClass] = useState(true); // State to track form visibility
     const [newClassDetails, setNewClassDetails] = useState({
         className: '',
         courseCode: '',
@@ -89,7 +90,7 @@ const PlannerSettings = () => {
             endDate: plannerDetails.endDate
         });
         alert('Planner details updated successfully!');
-        refetch(); //Trigger refetch to PlannerNav
+        refetch(); // Trigger refetch to PlannerNav
     };
 
     const handleAddClass = async () => {
@@ -97,6 +98,7 @@ const PlannerSettings = () => {
         const plannerDoc = doc(firestore, 'planners', id);
         await updateDoc(plannerDoc, { classes: updatedClasses });
         setIsAddingClass(false);
+        setIsEditingClass(true); // Show the edit class form again
         setNewClassDetails({
             className: '',
             courseCode: '',
@@ -128,6 +130,7 @@ const PlannerSettings = () => {
 
     const handleCancelAddClass = () => {
         setIsAddingClass(false);
+        setIsEditingClass(true); // Show the edit class form again
         setNewClassDetails({
             className: '',
             courseCode: '',
@@ -174,7 +177,7 @@ const PlannerSettings = () => {
                     />
                 </div>
                 <button onClick={handleSavePlannerDetails}>Save Planner Details</button>
-                {planner.classes && (
+                {planner.classes && isEditingClass && (
                     <ClassDropdown
                         classes={planner.classes}
                         selectedClassIndex={selectedClassIndex}
@@ -183,7 +186,7 @@ const PlannerSettings = () => {
                         onDeleteClass={handleDeleteClass}
                     />
                 )}
-                <button className="add-class-button" onClick={() => setIsAddingClass(true)}>Add a Class</button>
+                <button className="add-class-button" onClick={() => { setIsAddingClass(true); setIsEditingClass(false); }}>Add a Class</button>
                 {isAddingClass && (
                     <div className="add-class-form">
                         <h2>Add a Class Form</h2>
