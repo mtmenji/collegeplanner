@@ -13,7 +13,6 @@ const PlannerNav = ({ refetch }) => {
     const [weeks, setWeeks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [menuOpen, setMenuOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState('Menu');
 
     useEffect(() => {
         const fetchPlanner = async () => {
@@ -69,20 +68,18 @@ const PlannerNav = ({ refetch }) => {
         return `${startDate} - ${endDate}`;
     };
 
-    const handleMenuClick = (option) => {
-        setSelectedOption(option);
-        setMenuOpen(!menuOpen); // Toggle the menu open/closed state
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
     };
 
     return (
         <nav className="plannerNav">
-            <button className="dropdown-toggle" onClick={() => handleMenuClick(selectedOption)}>
-                {selectedOption} <span className="dropdown-arrow">▼</span>
+            <button className="dropdown-toggle" onClick={toggleMenu}>
+                Planner Menu <span className="dropdown-arrow">▼</span>
             </button>
             <div className={`dropdown-menu ${menuOpen ? 'show' : ''}`}>
                 <Link
                     to={`/planners/${id}/calendar`}
-                    onClick={() => handleMenuClick('Calendar')}
                     className={`plannerTab ${currentPath.endsWith('calendar') ? 'active' : ''}`}
                 >
                     Calendar
@@ -91,7 +88,6 @@ const PlannerNav = ({ refetch }) => {
                     <Link
                         key={index}
                         to={`/planners/${id}/week${index + 1}`}
-                        onClick={() => handleMenuClick(`Week ${index + 1}`)}
                         className={`weekTab ${currentWeek === `week${index + 1}` ? 'active' : ''}`}
                         onMouseEnter={() => setHoveredWeek(index)}
                         onMouseLeave={() => setHoveredWeek(null)}
@@ -107,7 +103,6 @@ const PlannerNav = ({ refetch }) => {
                 ))}
                 <Link
                     to={`/planners/${id}/settings`}
-                    onClick={() => handleMenuClick('Settings')}
                     className={`plannerTab ${currentPath.endsWith('settings') ? 'active' : ''}`}
                 >
                     Settings
