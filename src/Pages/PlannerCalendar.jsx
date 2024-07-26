@@ -20,7 +20,7 @@ const PlannerCalendar = () => {
     return (
         <div className="plannerCalendarPage">
             <PlannerNav />
-            <h1>Calendar for Planner {id}</h1>
+            <h1>Calendar for {planner.name} Planner</h1>
             <div className="plannerContent">
                 <h2>{planner.name}</h2>
                 <p><strong>Start Date:</strong> {planner.startDate}</p>

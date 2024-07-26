@@ -141,7 +141,7 @@ const PlannerSettings = () => {
     return (
         <div className="plannerSettingsPage">
             <PlannerNav refetch={refetch}/>
-            <h1>Settings for Planner {plannerDetails.name}</h1>
+            <h1>Settings for {plannerDetails.name} Planner</h1>
             <div className="plannerSettingsContent">
                 <div>
                     <label><strong>Planner Name:</strong></label>

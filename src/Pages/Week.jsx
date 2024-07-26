@@ -20,7 +20,7 @@ const Week = () => {
     return (
         <div className="weekPage">
             <PlannerNav />
-            <h1>{weekid} of Planner {planner.name}</h1>
+            <h1>{weekid} of {planner.name} Planner</h1>
             <div className="plannerContent">
                 <h2>{planner.name}</h2>
                 <p><strong>Start Date:</strong> {planner.startDate}</p>
