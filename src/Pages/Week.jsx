@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './Week.css';
 import PlannerNav from '../Components/PlannerNav';
@@ -34,6 +34,13 @@ const Week = () => {
         setShowDetails(prev => !prev);
     };
 
+    useEffect(() => {
+        if (planner) {
+            const selectedDays = planner.selectedDays || [];
+            document.documentElement.style.setProperty('--columns-count', selectedDays.length + 1);
+        }
+    }, [planner]);
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -46,6 +53,10 @@ const Week = () => {
     const weekDates = getWeekDates(planner.startDate, weekIndex);
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+    // Get selected days from planner
+    const selectedDays = planner.selectedDays || [];
+    const selectedDayIndices = selectedDays.map(day => daysOfWeek.indexOf(day));
+
     return (
         <div className="weekPage">
             <PlannerNav />
@@ -53,9 +64,9 @@ const Week = () => {
                 <button className="gridHeader" onClick={toggleDetails}>
                     {showDetails ? 'Hide' : 'Show'}
                 </button>
-                {daysOfWeek.map((day, index) => (
+                {selectedDayIndices.map((index) => (
                     <div key={index} className="dayHeader">
-                        <div className="dayName">{day}</div>
+                        <div className="dayName">{daysOfWeek[index]}</div>
                         <div className="dayDate">{formatDate(weekDates[index])}</div>
                     </div>
                 ))}
@@ -65,7 +76,7 @@ const Week = () => {
                         <div className={`courseDetails ${showDetails ? 'show' : 'hide'}`}>
                             <div>{cls.className}</div>
                             <div>{cls.location}</div>
-                            <div>{cls.meetingDays}</div>
+                            <div>{cls.meetingDays.join(', ')}</div>
                             <div>{cls.startTime} - {cls.endTime}</div>
                         </div>
                     </div>

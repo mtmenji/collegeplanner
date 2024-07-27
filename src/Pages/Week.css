@@ -1,6 +1,10 @@
+:root {
+    --columns-count: 8;
+}
+
 .plannerGrid {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(var(--columns-count), 1fr);
     grid-template-rows: auto;
     gap: 10px;
 }
@@ -36,7 +40,6 @@
 .courseCode {
     writing-mode: vertical-lr;
     text-orientation: mixed;
-    transform: rotate(-90deg);
     text-align: center;
     border-right: 1px solid #ccc;
     padding: 5px;
@@ -53,11 +56,11 @@
 
 /* Hide/Show Button *********************/
 .plannerGrid.showDetails {
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(var(--columns-count), 1fr);
 }
 
 .plannerGrid.hideDetails {
-    grid-template-columns: 50px repeat(7, 1fr);
+    grid-template-columns: 50px repeat(calc(var(--columns-count) - 1), 1fr);
 }
 
 .courseDetails.show {

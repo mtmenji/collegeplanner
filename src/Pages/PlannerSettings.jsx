@@ -18,6 +18,7 @@ const PlannerSettings = () => {
         endDate: ''
     });
 
+    const [selectedDays, setSelectedDays] = useState([]);
     const [selectedClassIndex, setSelectedClassIndex] = useState(0);
     const [isAddingClass, setIsAddingClass] = useState(false);
     const [isEditingClass, setIsEditingClass] = useState(true);
@@ -37,6 +38,7 @@ const PlannerSettings = () => {
                 startDate: planner.startDate,
                 endDate: planner.endDate
             });
+            setSelectedDays(planner.selectedDays || []);
         }
     }, [planner]);
 
@@ -81,12 +83,21 @@ const PlannerSettings = () => {
         }));
     };
 
+    const handleDayChange = (day) => {
+        const updatedDays = selectedDays.includes(day)
+            ? selectedDays.filter(d => d !== day)
+            : [...selectedDays, day];
+        updatedDays.sort((a, b) => daysOfWeek.indexOf(a) - daysOfWeek.indexOf(b));
+        setSelectedDays(updatedDays);
+    };
+
     const handleSavePlannerDetails = async () => {
         const plannerDoc = doc(firestore, 'planners', id);
         await updateDoc(plannerDoc, {
             name: plannerDetails.name,
             startDate: plannerDetails.startDate,
-            endDate: plannerDetails.endDate
+            endDate: plannerDetails.endDate,
+            selectedDays
         });
         alert('Planner details updated successfully!');
         refetch();
@@ -140,6 +151,8 @@ const PlannerSettings = () => {
         });
     };
 
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
     return (
         <div className="plannerSettingsPage">
             <PlannerNav refetch={refetch}/>
@@ -174,6 +187,19 @@ const PlannerSettings = () => {
                         onChange={handleChange}
                         required
                     />
+                </div>
+                <div>
+                    <label><strong>Select Days:</strong></label>
+                    {daysOfWeek.map(day => (
+                        <div key={day}>
+                            <input
+                                type="checkbox"
+                                checked={selectedDays.includes(day)}
+                                onChange={() => handleDayChange(day)}
+                            />
+                            {day}
+                        </div>
+                    ))}
                 </div>
                 <button onClick={handleSavePlannerDetails}>Save Planner Details</button>
                 <hr/>
