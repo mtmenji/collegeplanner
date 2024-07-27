@@ -20,6 +20,11 @@ const getWeekDates = (startDateStr, weekIndex) => {
     return weekDates;
 };
 
+const formatDate = (date) => {
+    const options = { month: 'short', day: 'numeric' };
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+};
+
 const Week = () => {
     const { id, weekid } = useParams();
     const { planner, loading } = usePlanner(id);
@@ -33,18 +38,19 @@ const Week = () => {
     }
 
     const weekIndex = parseInt(weekid.replace('week', ''), 10);
-    const weekNum = 'Week ' + weekIndex;
     const weekDates = getWeekDates(planner.startDate, weekIndex);
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
     return (
         <div className="weekPage">
             <PlannerNav />
-            <h1>{weekNum} of {planner.name} Planner</h1>
             <div className="plannerGrid">
-                <div className="gridHeader">{weekNum}</div>
+                <div className="gridHeader">Hide/Show</div>
                 {daysOfWeek.map((day, index) => (
-                    <div key={index} className="gridHeader">{day}</div>
+                    <div key={index} className="dayHeader">
+                        <div className="dayName">{day}</div>
+                        <div className="dayDate">{formatDate(weekDates[index])}</div>
+                    </div>
                 ))}
                 {planner.classes && planner.classes.map((cls, index) => (
                     <div key={index} className="courseGrid">
@@ -52,7 +58,8 @@ const Week = () => {
                         <div className="courseDetails">
                             <div>{cls.className}</div>
                             <div>{cls.location}</div>
-                            <div>{cls.meetingDays} {cls.startTime}-{cls.endTime}</div>
+                            <div>{cls.meetingDays}</div>
+                            <div>{cls.startTime} - {cls.endTime}</div>
                         </div>
                     </div>
                 ))}
