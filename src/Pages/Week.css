@@ -8,13 +8,13 @@
 .gridHeader {
     font-weight: bold;
     text-align: center;
+    align-self: center;
 }
 
 .courseGrid {
     display: grid;
     grid-template-columns: 50px auto;
     grid-column: 1/2;
-    border: 1px solid #ccc;
     padding: 5px;
 }
 
@@ -34,8 +34,9 @@
 }
 
 .courseCode {
-    writing-mode: vertical-rl;
+    writing-mode: vertical-lr;
     text-orientation: mixed;
+    transform: rotate(-90deg);
     text-align: center;
     border-right: 1px solid #ccc;
     padding: 5px;
@@ -48,4 +49,21 @@
 
 .courseDetails > div {
     margin: 5px 0;
+}
+
+/* Hide/Show Button *********************/
+.plannerGrid.showDetails {
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.plannerGrid.hideDetails {
+    grid-template-columns: 50px repeat(7, 1fr);
+}
+
+.courseDetails.show {
+    display: block;
+}
+
+.courseDetails.hide {
+    display: none;
 }

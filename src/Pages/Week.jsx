@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './Week.css';
 import PlannerNav from '../Components/PlannerNav';
@@ -28,6 +28,11 @@ const formatDate = (date) => {
 const Week = () => {
     const { id, weekid } = useParams();
     const { planner, loading } = usePlanner(id);
+    const [showDetails, setShowDetails] = useState(false);
+
+    const toggleDetails = () => {
+        setShowDetails(prev => !prev);
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -44,8 +49,10 @@ const Week = () => {
     return (
         <div className="weekPage">
             <PlannerNav />
-            <div className="plannerGrid">
-                <div className="gridHeader">Hide/Show</div>
+            <div className={`plannerGrid ${showDetails ? 'showDetails' : 'hideDetails'}`}>
+                <button className="gridHeader" onClick={toggleDetails}>
+                    {showDetails ? 'Hide' : 'Show'}
+                </button>
                 {daysOfWeek.map((day, index) => (
                     <div key={index} className="dayHeader">
                         <div className="dayName">{day}</div>
@@ -55,7 +62,7 @@ const Week = () => {
                 {planner.classes && planner.classes.map((cls, index) => (
                     <div key={index} className="courseGrid">
                         <div className="courseCode">{cls.courseCode}</div>
-                        <div className="courseDetails">
+                        <div className={`courseDetails ${showDetails ? 'show' : 'hide'}`}>
                             <div>{cls.className}</div>
                             <div>{cls.location}</div>
                             <div>{cls.meetingDays}</div>
