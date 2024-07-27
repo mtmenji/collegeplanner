@@ -57,6 +57,9 @@ const Week = () => {
     const selectedDays = planner.selectedDays || [];
     const selectedDayIndices = selectedDays.map(day => daysOfWeek.indexOf(day));
 
+    // Calculate the total number of cells
+    const totalCells = selectedDayIndices.length * (planner.classes ? planner.classes.length : 0);
+
     return (
         <div className="weekPage">
             <PlannerNav />
@@ -70,16 +73,23 @@ const Week = () => {
                         <div className="dayDate">{formatDate(weekDates[index])}</div>
                     </div>
                 ))}
-                {planner.classes && planner.classes.map((cls, index) => (
-                    <div key={index} className="courseGrid">
-                        <div className="courseCode">{cls.courseCode}</div>
-                        <div className={`courseDetails ${showDetails ? 'show' : 'hide'}`}>
-                            <div>{cls.className}</div>
-                            <div>{cls.location}</div>
-                            <div>{cls.meetingDays.join(', ')}</div>
-                            <div>{cls.startTime} - {cls.endTime}</div>
+                {planner.classes && planner.classes.map((cls, classIndex) => (
+                    <React.Fragment key={classIndex}>
+                        <div className="courseGrid">
+                            <div className="courseCode">{cls.courseCode}</div>
+                            <div className={`courseDetails ${showDetails ? 'show' : 'hide'}`}>
+                                <div>{cls.className}</div>
+                                <div>{cls.location}</div>
+                                <div>{cls.meetingDays.join(', ')}</div>
+                                <div>{cls.startTime} - {cls.endTime}</div>
+                            </div>
                         </div>
-                    </div>
+                        {selectedDayIndices.map((_, dayIndex) => (
+                            <div key={`${classIndex}-${dayIndex}`} className="gridCell">
+                                {/* Add any content or styling for the cell here */}
+                            </div>
+                        ))}
+                    </React.Fragment>
                 ))}
             </div>
         </div>

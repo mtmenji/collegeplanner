@@ -54,6 +54,11 @@
     margin: 5px 0;
 }
 
+.gridCell {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
 /* Hide/Show Button *********************/
 .plannerGrid.showDetails {
     grid-template-columns: repeat(var(--columns-count), 1fr);
