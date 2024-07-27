@@ -52,8 +52,12 @@ const Planners = () => {
             <ul>
                 {planners.map(planner => (
                     <li key={planner.id}>
-                        <a href={`/planners/${planner.id}`}>Planner {planner.name}</a>
-                        <button onClick={() => handleDelete(planner.id)}>Delete</button>
+                    {planner.lastRoute ? (
+                        <a href={planner.lastRoute}>Planner {planner.name}</a>
+                    ) : (
+                        <a href={`/planners/${planner.id}/settings`}>Planner {planner.name}</a>
+                    )}
+                    <button onClick={() => handleDelete(planner.id)}>Delete</button>
                     </li>
                 ))}
             </ul>

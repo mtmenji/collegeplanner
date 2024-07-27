@@ -1,13 +1,52 @@
 // Planner.jsx
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import PlannerNav from '../Components/PlannerNav'; // Import PlannerNav component
-import './Planner.css'; // Add or update CSS file for styling
-import usePlanner from '../Hooks/usePlanner'; // Import usePlanner hook
+import React, { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { useAuth } from '../Contexts/AuthContext';
+import PlannerNav from '../Components/PlannerNav';
+import './Planner.css';
+import usePlanner from '../Hooks/usePlanner';
 
 const Planner = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
+    const { currentUser } = useAuth();
+    const firestore = getFirestore();
     const { planner, loading } = usePlanner(id);
+
+    useEffect(() => {
+        const fetchLastRoute = async () => {
+            const plannerDoc = await getDoc(doc(firestore, 'planners', id));
+            if (plannerDoc.exists()) {
+                const lastRoute = plannerDoc.data().lastRoute;
+                if (lastRoute) {
+                    navigate(lastRoute);
+                }
+            }
+        };
+
+        fetchLastRoute();
+    }, [id, navigate, firestore]);
+
+    useEffect(() => {
+        const saveLastRoute = async () => {
+            const currentRoute = window.location.pathname;
+            await updateDoc(doc(firestore, 'planners', id), {
+                lastRoute: currentRoute,
+            });
+        };
+
+        const handleBeforeUnload = () => {
+            saveLastRoute();
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            saveLastRoute();
+        };
+    }, [id, firestore]);
 
     if (loading) {
         return <div>Loading...</div>;

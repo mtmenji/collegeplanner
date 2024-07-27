@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { useAuth } from '../Contexts/AuthContext';
 import './PlannerNav.css'; // Ensure the CSS file is updated accordingly
 
 const PlannerNav = ({ refetch }) => {
@@ -13,10 +14,11 @@ const PlannerNav = ({ refetch }) => {
     const [weeks, setWeeks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [menuOpen, setMenuOpen] = useState(false);
+    const { currentUser } = useAuth();
+    const firestore = getFirestore();
 
     useEffect(() => {
         const fetchPlanner = async () => {
-            const firestore = getFirestore();
             const plannerDoc = doc(firestore, 'planners', id);
             const plannerSnapshot = await getDoc(plannerDoc);
             if (plannerSnapshot.exists()) {
@@ -28,6 +30,36 @@ const PlannerNav = ({ refetch }) => {
 
         fetchPlanner();
     }, [id, refetch]);
+
+    useEffect(() => {
+        const saveLastRoute = async () => {
+            if (currentUser) {
+                const currentRoute = window.location.pathname;
+                await updateDoc(doc(firestore, 'planners', id), {
+                    lastRoute: currentRoute,
+                });
+            }
+        };
+
+        const handleBeforeUnload = () => {
+            saveLastRoute();
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            saveLastRoute();
+        };
+    }, [currentUser, firestore, id]);
+
+    const handleNavLinkClick = async (route) => {
+        if (currentUser) {
+            await updateDoc(doc(firestore, 'planners', id), {
+                lastRoute: route,
+            });
+        }
+    };
 
     const calculateWeeks = (startDateStr, endDateStr) => {
         const startDate = new Date(startDateStr);
@@ -81,6 +113,7 @@ const PlannerNav = ({ refetch }) => {
                 <Link
                     to={`/planners/${id}/calendar`}
                     className={`plannerTab ${currentPath.endsWith('calendar') ? 'active' : ''}`}
+                    onClick={() => handleNavLinkClick(`/planners/${id}/calendar`)}
                 >
                     Calendar
                 </Link>
@@ -91,6 +124,7 @@ const PlannerNav = ({ refetch }) => {
                         className={`weekTab ${currentWeek === `week${index + 1}` ? 'active' : ''}`}
                         onMouseEnter={() => setHoveredWeek(index)}
                         onMouseLeave={() => setHoveredWeek(null)}
+                        onClick={() => handleNavLinkClick(`/planners/${id}/week${index + 1}`)}
                     >
                         {hoveredWeek === index ? (
                             <div className='plannerNavDate'>
@@ -104,6 +138,7 @@ const PlannerNav = ({ refetch }) => {
                 <Link
                     to={`/planners/${id}/settings`}
                     className={`plannerTab ${currentPath.endsWith('settings') ? 'active' : ''}`}
+                    onClick={() => handleNavLinkClick(`/planners/${id}/settings`)}
                 >
                     Settings
                 </Link>
