@@ -1,4 +1,3 @@
-// Week.jsx
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import './Week.css';
@@ -34,32 +33,27 @@ const Week = () => {
     }
 
     const weekIndex = parseInt(weekid.replace('week', ''), 10);
+    const weekNum = 'Week ' + weekIndex;
     const weekDates = getWeekDates(planner.startDate, weekIndex);
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
     return (
         <div className="weekPage">
             <PlannerNav />
-            <h1>{weekid} of {planner.name} Planner</h1>
-            <div className="weekDates">
-                {weekDates.map((date, index) => (
-                    <div key={index} className="weekDate">
-                        <strong>{daysOfWeek[index]}:</strong> {date.toLocaleDateString('en-US')}
-                    </div>
+            <h1>{weekNum} of {planner.name} Planner</h1>
+            <div className="plannerGrid">
+                <div className="gridHeader">{weekNum}</div>
+                {daysOfWeek.map((day, index) => (
+                    <div key={index} className="gridHeader">{day}</div>
                 ))}
-            </div>
-            <div className="plannerContent">
-                <h2>{planner.name}</h2>
-                <p><strong>Start Date:</strong> {planner.startDate}</p>
-                <p><strong>End Date:</strong> {planner.endDate}</p>
                 {planner.classes && planner.classes.map((cls, index) => (
-                    <div key={index}>
-                        <h3>Class {index + 1}</h3>
-                        <p><strong>Class Name:</strong> {cls.className}</p>
-                        <p><strong>Course Code:</strong> {cls.courseCode}</p>
-                        <p><strong>Location:</strong> {cls.location}</p>
-                        <p><strong>Meeting Time:</strong> {cls.meetingTime}</p>
-                        <p><strong>Meeting Days:</strong> {cls.meetingDays}</p>
+                    <div key={index} className="courseGrid">
+                        <div className="courseCode">{cls.courseCode}</div>
+                        <div className="courseDetails">
+                            <div>{cls.className}</div>
+                            <div>{cls.location}</div>
+                            <div>{cls.meetingDays} {cls.startTime}-{cls.endTime}</div>
+                        </div>
                     </div>
                 ))}
             </div>

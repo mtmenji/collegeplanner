@@ -1,15 +1,40 @@
-/* Week.css */
-
-.weekDates {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+.weekPage {
+    padding: 20px;
 }
 
-.weekDate {
+.plannerGrid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: auto;
+    gap: 10px;
+}
+
+.gridHeader {
+    font-weight: bold;
     text-align: center;
 }
 
-.plannerContent {
-    margin-top: 20px;
+.courseGrid {
+    display: grid;
+    grid-template-columns: 50px auto;
+    grid-column: 1/2;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.courseCode {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    text-align: center;
+    border-right: 1px solid #ccc;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.courseDetails {
+    padding: 5px;
+}
+
+.courseDetails > div {
+    margin: 5px 0;
 }
