@@ -29,9 +29,44 @@ const Week = () => {
     const { id, weekid } = useParams();
     const { planner, loading } = usePlanner(id);
     const [showDetails, setShowDetails] = useState(false);
+    const [cellsContent, setCellsContent] = useState({}); // State for cell contents
 
     const toggleDetails = () => {
         setShowDetails(prev => !prev);
+    };
+
+    const handleAddContent = (cellKey) => {
+        setCellsContent(prev => {
+            const newContents = { ...prev };
+            if (!newContents[cellKey]) {
+                newContents[cellKey] = [];
+            }
+            newContents[cellKey] = [...newContents[cellKey], { text: 'test', completed: false }];
+            return newContents;
+        });
+    };
+
+    const handleRemoveContent = (cellKey, index) => {
+        setCellsContent(prev => {
+            const newContents = { ...prev };
+            if (newContents[cellKey]) {
+                newContents[cellKey] = newContents[cellKey].filter((_, i) => i !== index);
+                if (newContents[cellKey].length === 0) {
+                    delete newContents[cellKey];
+                }
+            }
+            return newContents;
+        });
+    };
+
+    const handleToggleComplete = (cellKey, index) => {
+        setCellsContent(prev => {
+            const newContents = { ...prev };
+            if (newContents[cellKey]) {
+                newContents[cellKey][index].completed = !newContents[cellKey][index].completed;
+            }
+            return newContents;
+        });
     };
 
     useEffect(() => {
@@ -57,9 +92,6 @@ const Week = () => {
     const selectedDays = planner.selectedDays || [];
     const selectedDayIndices = selectedDays.map(day => daysOfWeek.indexOf(day));
 
-    // Calculate the total number of cells
-    const totalCells = selectedDayIndices.length * (planner.classes ? planner.classes.length : 0);
-
     return (
         <div className="weekPage">
             <PlannerNav />
@@ -84,11 +116,36 @@ const Week = () => {
                                 <div>{cls.startTime} - {cls.endTime}</div>
                             </div>
                         </div>
-                        {selectedDayIndices.map((_, dayIndex) => (
-                            <div key={`${classIndex}-${dayIndex}`} className="gridCell">
-                                {/* Add any content or styling for the cell here */}
-                            </div>
-                        ))}
+                        {selectedDayIndices.map((_, dayIndex) => {
+                            const cellKey = `${classIndex}-${dayIndex}`;
+                            return (
+                                <div key={cellKey} className="gridCell">
+                                    {cellsContent[cellKey] && cellsContent[cellKey].map((content, index) => (
+                                        <div key={index} className="contentWrapper">
+                                            <input 
+                                                type="checkbox" 
+                                                className="checkbox"
+                                                checked={content.completed}
+                                                onChange={() => handleToggleComplete(cellKey, index)}
+                                            />
+                                            <p className={content.completed ? 'completed' : ''}>{content.text}</p>
+                                            <button 
+                                                className="removeButton"
+                                                onClick={() => handleRemoveContent(cellKey, index)}
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
+                                    ))}
+                                    <button 
+                                        className="addButton"
+                                        onClick={() => handleAddContent(cellKey)}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            );
+                        })}
                     </React.Fragment>
                 ))}
             </div>

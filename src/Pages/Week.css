@@ -57,6 +57,62 @@
 .gridCell {
     border: 1px solid #ddd;
     padding: 10px;
+    position: relative; /* To position the button inside the cell */
+}
+
+.addButton {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    background-color: #ccc; /* Grey background */
+    color: #333; /* Darker text color */
+    border: none;
+    width: 30px; /* Square button */
+    height: 30px; /* Square button */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.addButton:hover {
+    background-color: #aaa; /* Slightly darker grey on hover */
+}
+
+.contentWrapper {
+    position: relative; /* For positioning the remove button */
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.contentWrapper p {
+    margin: 0 5px;
+}
+
+.removeButton {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #f00; /* Red background */
+    color: #fff; /* White text color */
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.removeButton:hover {
+    background-color: #c00; /* Darker red on hover */
+}
+
+.completed {
+    text-decoration: line-through;
 }
 
 /* Hide/Show Button *********************/
