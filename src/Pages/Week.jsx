@@ -30,18 +30,20 @@ const Week = () => {
     const { planner, loading } = usePlanner(id);
     const [showDetails, setShowDetails] = useState(false);
     const [cellsContent, setCellsContent] = useState({});
+    const [inputValues, setInputValues] = useState({});
 
     const toggleDetails = () => {
         setShowDetails(prev => !prev);
     };
 
     const handleAddContent = (cellKey) => {
+        setInputValues(prev => ({ ...prev, [cellKey]: '' }));
         setCellsContent(prev => {
             const newContents = { ...prev };
             if (!newContents[cellKey]) {
                 newContents[cellKey] = [];
             }
-            newContents[cellKey] = [...newContents[cellKey], { text: 'test', completed: false }];
+            newContents[cellKey] = [...newContents[cellKey], { text: '', completed: false, editing: true }];
             return newContents;
         });
     };
@@ -71,6 +73,47 @@ const Week = () => {
             }
             return newContents;
         });
+    };
+
+    const handleInputChange = (cellKey, index, value) => {
+        setInputValues(prev => ({ ...prev, [cellKey]: value }));
+        setCellsContent(prev => {
+            const newContents = { ...prev };
+            if (newContents[cellKey]) {
+                const cellContents = [...newContents[cellKey]];
+                cellContents[index].text = value;
+                newContents[cellKey] = cellContents;
+            }
+            return newContents;
+        });
+    };
+
+    const handleInputBlur = (cellKey, index) => {
+        setCellsContent(prev => {
+            const newContents = { ...prev };
+            if (newContents[cellKey]) {
+                const cellContents = [...newContents[cellKey]];
+                cellContents[index].editing = false;
+                newContents[cellKey] = cellContents;
+            }
+            return newContents;
+        });
+    };
+
+    const handleEditContent = (cellKey, index) => {
+        setCellsContent(prev => {
+            const newContents = { ...prev };
+            if (newContents[cellKey]) {
+                const cellContents = [...newContents[cellKey]];
+                cellContents[index].editing = true;
+                newContents[cellKey] = cellContents;
+            }
+            return newContents;
+        });
+        setInputValues(prev => ({
+            ...prev,
+            [cellKey]: cellsContent[cellKey][index].text,
+        }));
     };
 
     useEffect(() => {
@@ -131,7 +174,28 @@ const Week = () => {
                                                 checked={content.completed}
                                                 onChange={() => handleToggleComplete(cellKey, index)}
                                             />
-                                            <p className={content.completed ? 'completed' : ''}>{content.text}</p>
+                                            {content.editing ? (
+                                                <input
+                                                    type="text"
+                                                    value={inputValues[cellKey] || ''}
+                                                    onChange={(e) => handleInputChange(cellKey, index, e.target.value)}
+                                                    onBlur={() => handleInputBlur(cellKey, index)}
+                                                    className="contentInput"
+                                                />
+                                            ) : (
+                                                <p 
+                                                    className={content.completed ? 'completed' : ''}
+                                                    onClick={() => handleToggleComplete(cellKey, index)}
+                                                >
+                                                    {content.text}
+                                                </p>
+                                            )}
+                                            <button 
+                                                className="editButton"
+                                                onClick={() => handleEditContent(cellKey, index)}
+                                            >
+                                                ✎
+                                            </button>
                                             <button 
                                                 className="removeButton"
                                                 onClick={() => handleRemoveContent(cellKey, index)}

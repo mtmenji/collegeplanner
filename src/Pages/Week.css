@@ -97,7 +97,6 @@
     background-color: #f00; /* Red background */
     color: #fff; /* White text color */
     border: none;
-    border-radius: 50%;
     width: 20px;
     height: 20px;
     display: flex;
@@ -109,6 +108,20 @@
 
 .removeButton:hover {
     background-color: #c00; /* Darker red on hover */
+}
+
+.editButton {
+    background-color: grey;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 2px 4px;
+    margin-left: 5px;
+    font-size: 0.8em;
+}
+
+.editButton:hover {
+    background-color: rgb(90, 90, 90); /* Darker red on hover */
 }
 
 .completed {
@@ -130,4 +143,29 @@
 
 .courseDetails.hide {
     display: none;
+}
+
+/*Additions*/
+
+.addButton {
+    padding: 2px 4px;
+}
+
+.checkbox {
+    margin-right: 5px;
+}
+
+.contentWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    border: 1px solid #ddd; /* Border for visual separation */
+    padding: 5px; /* Padding for spacing */
+    background-color: #f9f9f9; /* Light background color */
+}
+
+.contentInput {
+    flex-grow: 1; /* Make the input take available space */
+    margin-right: 5px; /* Space between input and buttons */
 }
