@@ -190,18 +190,20 @@ const Week = () => {
                                                     {content.text}
                                                 </p>
                                             )}
-                                            <button 
-                                                className="editButton"
-                                                onClick={() => handleEditContent(cellKey, index)}
-                                            >
-                                                ✎
-                                            </button>
-                                            <button 
-                                                className="removeButton"
-                                                onClick={() => handleRemoveContent(cellKey, index)}
-                                            >
-                                                ×
-                                            </button>
+                                            <div className="gridCellButtons">
+                                                <button 
+                                                    className="editButton"
+                                                    onClick={() => handleEditContent(cellKey, index)}
+                                                >
+                                                    ✎
+                                                </button>
+                                                <button 
+                                                    className="removeButton"
+                                                    onClick={() => handleRemoveContent(cellKey, index)}
+                                                >
+                                                    ×
+                                                </button>
+                                            </div>
                                         </div>
                                     ))}
                                     <button 
