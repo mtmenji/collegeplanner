@@ -6,10 +6,10 @@ import usePlanner from '../Hooks/usePlanner';
 
 const getWeekDates = (startDateStr, weekIndex) => {
     const startDate = new Date(startDateStr);
-    startDate.setDate(startDate.getDate() - startDate.getDay()); // Set to Sunday of the starting week
+    startDate.setDate(startDate.getDate() - startDate.getDay());
 
     const weekStart = new Date(startDate);
-    weekStart.setDate(weekStart.getDate() + (weekIndex - 1) * 7); // Calculate the start date of the selected week
+    weekStart.setDate(weekStart.getDate() + (weekIndex - 1) * 7);
 
     const weekDates = [];
     for (let i = 0; i < 7; i++) {
@@ -29,7 +29,7 @@ const Week = () => {
     const { id, weekid } = useParams();
     const { planner, loading } = usePlanner(id);
     const [showDetails, setShowDetails] = useState(false);
-    const [cellsContent, setCellsContent] = useState({}); // State for cell contents
+    const [cellsContent, setCellsContent] = useState({});
 
     const toggleDetails = () => {
         setShowDetails(prev => !prev);
@@ -63,7 +63,11 @@ const Week = () => {
         setCellsContent(prev => {
             const newContents = { ...prev };
             if (newContents[cellKey]) {
-                newContents[cellKey][index].completed = !newContents[cellKey][index].completed;
+                const cellContents = [...newContents[cellKey]];
+                const item = { ...cellContents[index] };
+                item.completed = !item.completed;
+                cellContents[index] = item;
+                newContents[cellKey] = cellContents;
             }
             return newContents;
         });
@@ -88,7 +92,6 @@ const Week = () => {
     const weekDates = getWeekDates(planner.startDate, weekIndex);
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-    // Get selected days from planner
     const selectedDays = planner.selectedDays || [];
     const selectedDayIndices = selectedDays.map(day => daysOfWeek.indexOf(day));
 
