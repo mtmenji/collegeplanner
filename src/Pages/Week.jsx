@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { getFirestore, doc, updateDoc, getDoc } from 'firebase/firestore';
 import './Week.css';
 import PlannerNav from '../Components/PlannerNav';
 import usePlanner from '../Hooks/usePlanner';
+import { v4 as uuidv4 } from 'uuid';
 
 const getWeekDates = (startDateStr, weekIndex) => {
     const startDate = new Date(startDateStr);
@@ -31,88 +33,141 @@ const Week = () => {
     const [showDetails, setShowDetails] = useState(false);
     const [cellsContent, setCellsContent] = useState({});
     const [inputValues, setInputValues] = useState({});
+    const firestore = getFirestore();
 
     const toggleDetails = () => {
         setShowDetails(prev => !prev);
     };
 
-    const handleAddContent = (cellKey) => {
+    const handleAddContent = async (cellKey, classIndex, dayIndex) => {
+        const newTaskId = uuidv4();
+        const newTask = { id: newTaskId, text: '', completed: false, editing: true };
+
         setInputValues(prev => ({ ...prev, [cellKey]: '' }));
         setCellsContent(prev => {
             const newContents = { ...prev };
-            if (!newContents[cellKey]) {
+            if (!Array.isArray(newContents[cellKey])) {
                 newContents[cellKey] = [];
             }
-            newContents[cellKey] = [...newContents[cellKey], { text: '', completed: false, editing: true }];
+            newContents[cellKey] = [...newContents[cellKey], newTask];
             return newContents;
         });
+
+        const weekIndex = parseInt(weekid.replace('week', ''), 10);
+        const weekDates = getWeekDates(planner.startDate, weekIndex);
+        const taskDate = weekDates[dayIndex].toISOString().split('T')[0];
+
+        const docRef = doc(firestore, 'planners', id);
+        const plannerDoc = await getDoc(docRef);
+        const tasks = plannerDoc.data().tasks || {};
+
+        if (!Array.isArray(tasks[cellKey])) {
+            tasks[cellKey] = [];
+        }
+
+        tasks[cellKey].push({ id: newTaskId, date: taskDate, classIndex, dayIndex, text: '', completed: false });
+
+        await updateDoc(docRef, { tasks });
     };
 
-    const handleRemoveContent = (cellKey, index) => {
+    const handleRemoveContent = async (cellKey, taskId) => {
         setCellsContent(prev => {
             const newContents = { ...prev };
-            if (newContents[cellKey]) {
-                newContents[cellKey] = newContents[cellKey].filter((_, i) => i !== index);
+            if (Array.isArray(newContents[cellKey])) {
+                newContents[cellKey] = newContents[cellKey].filter(task => task.id !== taskId);
                 if (newContents[cellKey].length === 0) {
                     delete newContents[cellKey];
                 }
             }
             return newContents;
         });
+
+        const docRef = doc(firestore, 'planners', id);
+        const plannerDoc = await getDoc(docRef);
+        const tasks = plannerDoc.data().tasks || {};
+        if (Array.isArray(tasks[cellKey])) {
+            tasks[cellKey] = tasks[cellKey].filter(task => task.id !== taskId);
+        }
+
+        await updateDoc(docRef, { tasks });
     };
 
-    const handleToggleComplete = (cellKey, index) => {
+    const handleToggleComplete = async (cellKey, taskId) => {
         setCellsContent(prev => {
             const newContents = { ...prev };
-            if (newContents[cellKey]) {
+            if (Array.isArray(newContents[cellKey])) {
                 const cellContents = [...newContents[cellKey]];
-                const item = { ...cellContents[index] };
+                const taskIndex = cellContents.findIndex(task => task.id === taskId);
+                const item = { ...cellContents[taskIndex] };
                 item.completed = !item.completed;
-                cellContents[index] = item;
+                cellContents[taskIndex] = item;
                 newContents[cellKey] = cellContents;
             }
             return newContents;
         });
+
+        const docRef = doc(firestore, 'planners', id);
+        const plannerDoc = await getDoc(docRef);
+        const tasks = plannerDoc.data().tasks || {};
+        if (Array.isArray(tasks[cellKey])) {
+            const taskIndex = tasks[cellKey].findIndex(task => task.id === taskId);
+            tasks[cellKey][taskIndex].completed = !tasks[cellKey][taskIndex].completed;
+        }
+
+        await updateDoc(docRef, { tasks });
     };
 
-    const handleInputChange = (cellKey, index, value) => {
+    const handleInputChange = async (cellKey, taskId, value) => {
         setInputValues(prev => ({ ...prev, [cellKey]: value }));
         setCellsContent(prev => {
             const newContents = { ...prev };
-            if (newContents[cellKey]) {
+            if (Array.isArray(newContents[cellKey])) {
                 const cellContents = [...newContents[cellKey]];
-                cellContents[index].text = value;
+                const taskIndex = cellContents.findIndex(task => task.id === taskId);
+                cellContents[taskIndex].text = value;
+                newContents[cellKey] = cellContents;
+            }
+            return newContents;
+        });
+
+        const docRef = doc(firestore, 'planners', id);
+        const plannerDoc = await getDoc(docRef);
+        const tasks = plannerDoc.data().tasks || {};
+        if (Array.isArray(tasks[cellKey])) {
+            const taskIndex = tasks[cellKey].findIndex(task => task.id === taskId);
+            tasks[cellKey][taskIndex].text = value;
+        }
+
+        await updateDoc(docRef, { tasks });
+    };
+
+    const handleInputBlur = (cellKey, taskId) => {
+        setCellsContent(prev => {
+            const newContents = { ...prev };
+            if (Array.isArray(newContents[cellKey])) {
+                const cellContents = [...newContents[cellKey]];
+                const taskIndex = cellContents.findIndex(task => task.id === taskId);
+                cellContents[taskIndex].editing = false;
                 newContents[cellKey] = cellContents;
             }
             return newContents;
         });
     };
 
-    const handleInputBlur = (cellKey, index) => {
+    const handleEditContent = (cellKey, taskId) => {
         setCellsContent(prev => {
             const newContents = { ...prev };
-            if (newContents[cellKey]) {
+            if (Array.isArray(newContents[cellKey])) {
                 const cellContents = [...newContents[cellKey]];
-                cellContents[index].editing = false;
-                newContents[cellKey] = cellContents;
-            }
-            return newContents;
-        });
-    };
-
-    const handleEditContent = (cellKey, index) => {
-        setCellsContent(prev => {
-            const newContents = { ...prev };
-            if (newContents[cellKey]) {
-                const cellContents = [...newContents[cellKey]];
-                cellContents[index].editing = true;
+                const taskIndex = cellContents.findIndex(task => task.id === taskId);
+                cellContents[taskIndex].editing = true;
                 newContents[cellKey] = cellContents;
             }
             return newContents;
         });
         setInputValues(prev => ({
             ...prev,
-            [cellKey]: cellsContent[cellKey][index].text,
+            [cellKey]: cellsContent[cellKey].find(task => task.id === taskId).text,
         }));
     };
 
@@ -121,6 +176,17 @@ const Week = () => {
             const selectedDays = planner.selectedDays || [];
             document.documentElement.style.setProperty('--columns-count', selectedDays.length + 1);
         }
+    }, [planner]);
+
+    useEffect(() => {
+        const fetchTasks = async () => {
+            if (planner) {
+                const tasks = planner.tasks || {};
+                setCellsContent(tasks);
+            }
+        };
+
+        fetchTasks();
     }, [planner]);
 
     if (loading) {
@@ -158,60 +224,54 @@ const Week = () => {
                             <div className={`courseDetails ${showDetails ? 'show' : 'hide'}`}>
                                 <div>{cls.className}</div>
                                 <div>{cls.location}</div>
-                                <div>{cls.meetingDays.join(', ')}</div>
-                                <div>{cls.startTime} - {cls.endTime}</div>
+                                {cls.meetingTime && (
+                                    <div>{cls.meetingTime.start} - {cls.meetingTime.end}</div>
+                                )}
                             </div>
                         </div>
-                        {selectedDayIndices.map((_, dayIndex) => {
+                        {selectedDayIndices.map((dayIndex) => {
                             const cellKey = `${classIndex}-${dayIndex}`;
                             return (
                                 <div key={cellKey} className="gridCell">
-                                    {cellsContent[cellKey] && cellsContent[cellKey].map((content, index) => (
-                                        <div key={index} className="contentWrapper">
-                                            <input 
-                                                type="checkbox" 
-                                                className="checkbox"
-                                                checked={content.completed}
-                                                onChange={() => handleToggleComplete(cellKey, index)}
+                                    {Array.isArray(cellsContent[cellKey]) && cellsContent[cellKey].map((task) => (
+                                        <div key={task.id} className={`contentWrapper cellItem ${task.completed ? 'completed' : ''}`}>
+                                            <input
+                                                type="checkbox"
+                                                checked={task.completed}
+                                                onChange={() => handleToggleComplete(cellKey, task.id)}
+                                                className="taskCheckbox"
                                             />
-                                            {content.editing ? (
+                                            {task.editing ? (
                                                 <input
                                                     type="text"
                                                     value={inputValues[cellKey] || ''}
-                                                    onChange={(e) => handleInputChange(cellKey, index, e.target.value)}
-                                                    onBlur={() => handleInputBlur(cellKey, index)}
-                                                    className="contentInput"
+                                                    onChange={(e) => handleInputChange(cellKey, task.id, e.target.value)}
+                                                    onBlur={() => handleInputBlur(cellKey, task.id)}
+                                                    autoFocus
+                                                    className="taskInput"
                                                 />
                                             ) : (
-                                                <p 
-                                                    className={content.completed ? 'completed' : ''}
-                                                    onClick={() => handleToggleComplete(cellKey, index)}
-                                                >
-                                                    {content.text}
-                                                </p>
+                                                <div className="taskText" onClick={() => handleEditContent(cellKey, task.id)}>
+                                                    {task.text}
+                                                </div>
                                             )}
                                             <div className="gridCellButtons">
                                                 <button 
-                                                    className="editButton"
-                                                    onClick={() => handleEditContent(cellKey, index)}
+                                                    className="editButton" 
+                                                    onClick={() => handleEditContent(cellKey, task.id)}
                                                 >
                                                     ✎
                                                 </button>
                                                 <button 
-                                                    className="removeButton"
-                                                    onClick={() => handleRemoveContent(cellKey, index)}
+                                                    className="removeButton" 
+                                                    onClick={() => handleRemoveContent(cellKey, task.id)}
                                                 >
                                                     ×
                                                 </button>
                                             </div>
                                         </div>
                                     ))}
-                                    <button 
-                                        className="addButton"
-                                        onClick={() => handleAddContent(cellKey)}
-                                    >
-                                        +
-                                    </button>
+                                    <button className="addButton" onClick={() => handleAddContent(cellKey, classIndex, dayIndex)}>+</button>
                                 </div>
                             );
                         })}
