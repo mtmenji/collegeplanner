@@ -6,6 +6,3 @@
 - Planner.jsx: Implement task creation for within the planner. Make it match Google Sheets to where a user can click on a line to add a task and a checkbox to cross it out.
 - Planner.jsx: Create a feature for overdue unchecked tasks to create a notification in app and push the task to the next day with an 'Overdue by X days' message. The user can clear out the task manually, check it off, or edit the task which will remove the overdue message.
 - Add a feature to print the planner.
-
-
-- Week.jsx Checkbox: THe checkbox works without the useState changes. Take a look at the useState function to see where the issue may be occuring.
