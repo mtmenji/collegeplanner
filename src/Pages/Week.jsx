@@ -74,16 +74,16 @@ const Week = () => {
         tasks[`week${weekIndex}`][cellKey].push({ id: newTaskId, date: taskDate, classIndex, dayIndex, text: '', completed: false });
       
         await updateDoc(docRef, { tasks });
-      };
+    };    
       
     const handleRemoveContent = async (cellKey, taskId) => {
         setCellsContent(prev => {
             const newContents = { ...prev };
             if (Array.isArray(newContents[cellKey])) {
-            newContents[cellKey] = newContents[cellKey].filter(task => task.id !== taskId);
-            if (newContents[cellKey].length === 0) {
-                delete newContents[cellKey];
-            }
+                newContents[cellKey] = newContents[cellKey].filter(task => task.id !== taskId);
+                if (newContents[cellKey].length === 0) {
+                    delete newContents[cellKey];
+                }
             }
             return newContents;
         });
@@ -96,12 +96,12 @@ const Week = () => {
         if (tasks[`week${weekIndex}`] && Array.isArray(tasks[`week${weekIndex}`][cellKey])) {
             tasks[`week${weekIndex}`][cellKey] = tasks[`week${weekIndex}`][cellKey].filter(task => task.id !== taskId);
             if (tasks[`week${weekIndex}`][cellKey].length === 0) {
-            delete tasks[`week${weekIndex}`][cellKey];
+                delete tasks[`week${weekIndex}`][cellKey];
             }
         }
         
         await updateDoc(docRef, { tasks });
-    };      
+    };        
 
     const handleToggleComplete = async (cellKey, taskId) => {
         setCellsContent(prev => {
@@ -128,7 +128,7 @@ const Week = () => {
         }
       
         await updateDoc(docRef, { tasks });
-    };
+    };    
       
 
     const handleInputChange = async (cellKey, taskId, value) => {
@@ -156,8 +156,7 @@ const Week = () => {
       
         await updateDoc(docRef, { tasks });
     };
-      
-
+    
     const handleInputBlur = (cellKey, taskId) => {
         setCellsContent(prev => {
             const newContents = { ...prev };
@@ -169,7 +168,7 @@ const Week = () => {
             }
             return newContents;
         });
-    };
+    };    
 
     const handleEditContent = (cellKey, taskId) => {
         setCellsContent(prev => {
@@ -184,9 +183,9 @@ const Week = () => {
         });
         setInputValues(prev => ({
             ...prev,
-            [cellKey]: cellsContent[cellKey].find(task => task.id === taskId).text,
+            [cellKey]: cellsContent[cellKey].find(task => task.id === taskId)?.text || ''
         }));
-    };
+    };    
 
     useEffect(() => {
         if (planner) {
@@ -195,15 +194,17 @@ const Week = () => {
         }
     }, [planner]);
 
+    const fetchTasks = async () => {
+        if (planner) {
+            const weekIndex = parseInt(weekid.replace('week', ''), 10);
+            const docRef = doc(firestore, 'planners', id);
+            const plannerDoc = await getDoc(docRef);
+            const tasks = plannerDoc.data().tasks || {};
+            setCellsContent(tasks[`week${weekIndex}`] || {});
+        }
+    };
+    
     useEffect(() => {
-        const fetchTasks = async () => {
-            if (planner) {
-                const weekIndex = parseInt(weekid.replace('week', ''),10);
-                const tasks = planner.tasks[`week${weekIndex}`] || {};
-                setCellsContent(tasks);
-            }
-        };
-
         fetchTasks();
     }, [planner, weekid]);
 
@@ -224,7 +225,7 @@ const Week = () => {
 
     return (
         <div className="weekPage">
-            <PlannerNav />
+            <PlannerNav plannerId={id}/>
             <div className={`plannerGrid ${showDetails ? 'showDetails' : 'hideDetails'}`}>
                 <button className="gridHeader" onClick={toggleDetails}>
                     {showDetails ? 'Hide' : 'Show'}
@@ -242,9 +243,8 @@ const Week = () => {
                             <div className={`courseDetails ${showDetails ? 'show' : 'hide'}`}>
                                 <div>{cls.className}</div>
                                 <div>{cls.location}</div>
-                                {cls.meetingDays && (
-                                    <div>{cls.startTime} - {cls.endTime}</div>
-                                )}
+                                <div>{cls.meetingDays}</div>
+                                <div>{cls.startTime} - {cls.endTime}</div>
                             </div>
                         </div>
                         {selectedDayIndices.map((dayIndex) => {
