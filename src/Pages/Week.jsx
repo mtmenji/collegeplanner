@@ -42,40 +42,38 @@ const Week = () => {
     const handleAddContent = async (cellKey, classIndex, dayIndex) => {
         const newTaskId = uuidv4();
         const newTask = { id: newTaskId, text: '', completed: false, editing: true };
-      
+
         setInputValues(prev => ({ ...prev, [cellKey]: '' }));
         setCellsContent(prev => {
-          const newContents = { ...prev };
-          if (!Array.isArray(newContents[cellKey])) {
-            newContents[cellKey] = [];
-          }
-          newContents[cellKey] = [...newContents[cellKey], newTask];
-          return newContents;
+            const newContents = { ...prev };
+            if (!Array.isArray(newContents[cellKey])) {
+                newContents[cellKey] = [];
+            }
+            newContents[cellKey] = [...newContents[cellKey], newTask];
+            return newContents;
         });
-      
-        // Calculate week index and date
+
         const weekIndex = parseInt(weekid.replace('week', ''), 10);
         const weekDates = getWeekDates(planner.startDate, weekIndex);
         const taskDate = weekDates[dayIndex].toISOString().split('T')[0];
-      
-        // Update Firestore
+
         const docRef = doc(firestore, 'planners', id);
         const plannerDoc = await getDoc(docRef);
         const tasks = plannerDoc.data().tasks || {};
-      
-        if (!tasks[`week${weekIndex}`]) {
-          tasks[`week${weekIndex}`] = {};
+
+        if (!tasks[taskDate]) {
+            tasks[taskDate] = {};
         }
-      
-        if (!tasks[`week${weekIndex}`][cellKey]) {
-          tasks[`week${weekIndex}`][cellKey] = [];
+
+        if (!tasks[taskDate][cellKey]) {
+            tasks[taskDate][cellKey] = [];
         }
-      
-        tasks[`week${weekIndex}`][cellKey].push({ id: newTaskId, date: taskDate, classIndex, dayIndex, text: '', completed: false });
-      
+
+        tasks[taskDate][cellKey].push({ id: newTaskId, date: taskDate, classIndex, dayIndex, text: '', completed: false });
+
         await updateDoc(docRef, { tasks });
-    };    
-      
+    };
+
     const handleRemoveContent = async (cellKey, taskId) => {
         setCellsContent(prev => {
             const newContents = { ...prev };
@@ -87,73 +85,87 @@ const Week = () => {
             }
             return newContents;
         });
-        
-        // Update Firestore
+
         const weekIndex = parseInt(weekid.replace('week', ''), 10);
+        const weekDates = getWeekDates(planner.startDate, weekIndex);
+        const taskDate = weekDates.find(date => {
+            const task = cellsContent[cellKey]?.find(task => task.id === taskId);
+            return task && task.date;
+        })?.toISOString().split('T')[0];
+
         const docRef = doc(firestore, 'planners', id);
         const plannerDoc = await getDoc(docRef);
         const tasks = plannerDoc.data().tasks || {};
-        if (tasks[`week${weekIndex}`] && Array.isArray(tasks[`week${weekIndex}`][cellKey])) {
-            tasks[`week${weekIndex}`][cellKey] = tasks[`week${weekIndex}`][cellKey].filter(task => task.id !== taskId);
-            if (tasks[`week${weekIndex}`][cellKey].length === 0) {
-                delete tasks[`week${weekIndex}`][cellKey];
+        if (tasks[taskDate] && Array.isArray(tasks[taskDate][cellKey])) {
+            tasks[taskDate][cellKey] = tasks[taskDate][cellKey].filter(task => task.id !== taskId);
+            if (tasks[taskDate][cellKey].length === 0) {
+                delete tasks[taskDate][cellKey];
             }
         }
-        
+
         await updateDoc(docRef, { tasks });
-    };        
+    };
 
     const handleToggleComplete = async (cellKey, taskId) => {
         setCellsContent(prev => {
-          const newContents = { ...prev };
-          if (Array.isArray(newContents[cellKey])) {
-            const cellContents = [...newContents[cellKey]];
-            const taskIndex = cellContents.findIndex(task => task.id === taskId);
-            const item = { ...cellContents[taskIndex] };
-            item.completed = !item.completed;
-            cellContents[taskIndex] = item;
-            newContents[cellKey] = cellContents;
-          }
-          return newContents;
+            const newContents = { ...prev };
+            if (Array.isArray(newContents[cellKey])) {
+                const cellContents = [...newContents[cellKey]];
+                const taskIndex = cellContents.findIndex(task => task.id === taskId);
+                const item = { ...cellContents[taskIndex] };
+                item.completed = !item.completed;
+                cellContents[taskIndex] = item;
+                newContents[cellKey] = cellContents;
+            }
+            return newContents;
         });
-      
-        // Update Firestore
+
         const weekIndex = parseInt(weekid.replace('week', ''), 10);
+        const weekDates = getWeekDates(planner.startDate, weekIndex);
+        const taskDate = weekDates.find(date => {
+            const task = cellsContent[cellKey]?.find(task => task.id === taskId);
+            return task && task.date;
+        })?.toISOString().split('T')[0];
+
         const docRef = doc(firestore, 'planners', id);
         const plannerDoc = await getDoc(docRef);
         const tasks = plannerDoc.data().tasks || {};
-        if (tasks[`week${weekIndex}`] && Array.isArray(tasks[`week${weekIndex}`][cellKey])) {
-          const taskIndex = tasks[`week${weekIndex}`][cellKey].findIndex(task => task.id === taskId);
-          tasks[`week${weekIndex}`][cellKey][taskIndex].completed = !tasks[`week${weekIndex}`][cellKey][taskIndex].completed;
+        if (tasks[taskDate] && Array.isArray(tasks[taskDate][cellKey])) {
+            const taskIndex = tasks[taskDate][cellKey].findIndex(task => task.id === taskId);
+            tasks[taskDate][cellKey][taskIndex].completed = !tasks[taskDate][cellKey][taskIndex].completed;
         }
-      
+
         await updateDoc(docRef, { tasks });
-    };    
-      
+    };
 
     const handleInputChange = async (cellKey, taskId, value) => {
         setInputValues(prev => ({ ...prev, [cellKey]: value }));
         setCellsContent(prev => {
-          const newContents = { ...prev };
-          if (Array.isArray(newContents[cellKey])) {
-            const cellContents = [...newContents[cellKey]];
-            const taskIndex = cellContents.findIndex(task => task.id === taskId);
-            cellContents[taskIndex].text = value;
-            newContents[cellKey] = cellContents;
-          }
-          return newContents;
+            const newContents = { ...prev };
+            if (Array.isArray(newContents[cellKey])) {
+                const cellContents = [...newContents[cellKey]];
+                const taskIndex = cellContents.findIndex(task => task.id === taskId);
+                cellContents[taskIndex].text = value;
+                newContents[cellKey] = cellContents;
+            }
+            return newContents;
         });
-      
-        // Update Firestore
+
         const weekIndex = parseInt(weekid.replace('week', ''), 10);
+        const weekDates = getWeekDates(planner.startDate, weekIndex);
+        const taskDate = weekDates.find(date => {
+            const task = cellsContent[cellKey]?.find(task => task.id === taskId);
+            return task && task.date;
+        })?.toISOString().split('T')[0];
+
         const docRef = doc(firestore, 'planners', id);
         const plannerDoc = await getDoc(docRef);
         const tasks = plannerDoc.data().tasks || {};
-        if (tasks[`week${weekIndex}`] && Array.isArray(tasks[`week${weekIndex}`][cellKey])) {
-          const taskIndex = tasks[`week${weekIndex}`][cellKey].findIndex(task => task.id === taskId);
-          tasks[`week${weekIndex}`][cellKey][taskIndex].text = value;
+        if (tasks[taskDate] && Array.isArray(tasks[taskDate][cellKey])) {
+            const taskIndex = tasks[taskDate][cellKey].findIndex(task => task.id === taskId);
+            tasks[taskDate][cellKey][taskIndex].text = value;
         }
-      
+
         await updateDoc(docRef, { tasks });
     };
     
@@ -197,10 +209,25 @@ const Week = () => {
     const fetchTasks = async () => {
         if (planner) {
             const weekIndex = parseInt(weekid.replace('week', ''), 10);
+            const weekDates = getWeekDates(planner.startDate, weekIndex);
+            const dates = weekDates.map(date => date.toISOString().split('T')[0]);
             const docRef = doc(firestore, 'planners', id);
             const plannerDoc = await getDoc(docRef);
             const tasks = plannerDoc.data().tasks || {};
-            setCellsContent(tasks[`week${weekIndex}`] || {});
+            const cellsContent = {};
+
+            dates.forEach(date => {
+                if (tasks[date]) {
+                    Object.keys(tasks[date]).forEach(cellKey => {
+                        if (!cellsContent[cellKey]) {
+                            cellsContent[cellKey] = [];
+                        }
+                        cellsContent[cellKey] = [...cellsContent[cellKey], ...tasks[date][cellKey]];
+                    });
+                }
+            });
+
+            setCellsContent(cellsContent);
         }
     };
     
