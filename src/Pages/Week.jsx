@@ -39,39 +39,20 @@ const Week = () => {
         setShowDetails(prev => !prev);
     };
 
-    const handleAddContent = async (cellKey, classIndex, dayIndex) => {
+    const handleAddContent = (cellKey) => {
         const newTaskId = uuidv4();
         const newTask = { id: newTaskId, text: '', completed: false, editing: true };
-
-        setInputValues(prev => ({ ...prev, [cellKey]: '' }));
+    
         setCellsContent(prev => {
             const newContents = { ...prev };
             if (!Array.isArray(newContents[cellKey])) {
                 newContents[cellKey] = [];
             }
-            newContents[cellKey] = [...newContents[cellKey], newTask];
+            newContents[cellKey].push(newTask);
             return newContents;
         });
-
-        const weekIndex = parseInt(weekid.replace('week', ''), 10);
-        const weekDates = getWeekDates(planner.startDate, weekIndex);
-        const taskDate = weekDates[dayIndex].toISOString().split('T')[0];
-
-        const docRef = doc(firestore, 'planners', id);
-        const plannerDoc = await getDoc(docRef);
-        const tasks = plannerDoc.data().tasks || {};
-
-        if (!tasks[taskDate]) {
-            tasks[taskDate] = {};
-        }
-
-        if (!tasks[taskDate][cellKey]) {
-            tasks[taskDate][cellKey] = [];
-        }
-
-        tasks[taskDate][cellKey].push({ id: newTaskId, date: taskDate, classIndex, dayIndex, text: '', completed: false });
-
-        await updateDoc(docRef, { tasks });
+    
+        setInputValues(prev => ({ ...prev, [cellKey]: '' }));
     };
 
     const handleRemoveContent = async (cellKey, taskId) => {
@@ -169,18 +150,65 @@ const Week = () => {
         await updateDoc(docRef, { tasks });
     };
     
-    const handleInputBlur = (cellKey, taskId) => {
+    const handleInputBlur = async (cellKey, taskId) => {
+        const textboxValue = inputValues[cellKey];
+        if (!textboxValue) {
+            console.log("No input value found for cellKey:", cellKey);
+            return;
+        }
+    
         setCellsContent(prev => {
             const newContents = { ...prev };
             if (Array.isArray(newContents[cellKey])) {
                 const cellContents = [...newContents[cellKey]];
                 const taskIndex = cellContents.findIndex(task => task.id === taskId);
-                cellContents[taskIndex].editing = false;
-                newContents[cellKey] = cellContents;
+                if (taskIndex !== -1) {
+                    cellContents[taskIndex].editing = false;
+                    cellContents[taskIndex].text = textboxValue;
+                    newContents[cellKey] = cellContents;
+                }
             }
             return newContents;
         });
-    };    
+    
+        // Assuming `getWeekDates` is a function to get the week's dates based on planner start date and week index
+        const weekIndex = parseInt(weekid.replace('week', ''), 10);
+        const weekDates = getWeekDates(planner.startDate, weekIndex);
+        
+        // `cellKey` may need to relate to a specific day in the week
+        const dayIndex = parseInt(cellKey); // Assuming cellKey is a number representing the day index
+        const taskDate = weekDates[dayIndex]?.toISOString().split('T')[0];
+    
+        if (!taskDate) {
+            console.error("Task date is undefined for cellKey:", cellKey);
+            return;
+        }
+    
+        const docRef = doc(firestore, 'planners', id);
+        const plannerDoc = await getDoc(docRef);
+        const tasks = plannerDoc.data().tasks || {};
+    
+        if (!tasks[taskDate]) {
+            tasks[taskDate] = {};
+        }
+    
+        if (!tasks[taskDate][cellKey]) {
+            tasks[taskDate][cellKey] = [];
+        }
+    
+        const existingTaskIndex = tasks[taskDate][cellKey].findIndex(task => task.id === taskId);
+        if (existingTaskIndex !== -1) {
+            // Update the existing task
+            tasks[taskDate][cellKey][existingTaskIndex].text = textboxValue;
+        } else {
+            // Add new task
+            tasks[taskDate][cellKey].push({ id: taskId, date: taskDate, text: textboxValue, completed: false });
+        }
+    
+        console.log("Updating document with tasks:", tasks);
+    
+        await updateDoc(docRef, { tasks });
+    };       
 
     const handleEditContent = (cellKey, taskId) => {
         setCellsContent(prev => {
