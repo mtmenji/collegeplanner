@@ -142,6 +142,7 @@
 
 .completed {
     text-decoration: line-through;
+    background-color: red;
 }
 
 /* Hide/Show Button *********************/
