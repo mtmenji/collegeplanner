@@ -46,21 +46,21 @@ const Planners = () => {
 
     return (
         <div className="plannersPage">
-            <h1>Planners Page</h1>
-            <button onClick={() => setShowForm(true)}>Create New Planner</button>
-            {showForm && <CreatePlannerForm onClose={() => setShowForm(false)} />}
+            <h1>Planners</h1>
             <ul>
                 {planners.map(planner => (
-                    <li key={planner.id}>
+                    <li className="plannerList" key={planner.id}>
                     {planner.lastRoute ? (
-                        <a href={planner.lastRoute}>Planner {planner.name}</a>
+                        <a href={planner.lastRoute}>{planner.name}</a>
                     ) : (
                         <a href={`/planners/${planner.id}/settings`}>Planner {planner.name}</a>
                     )}
-                    <button onClick={() => handleDelete(planner.id)}>Delete</button>
+                    <button className="buttonDelete" onClick={() => handleDelete(planner.id)}>×</button>
                     </li>
                 ))}
             </ul>
+            <button className="buttonCreate" onClick={() => setShowForm(true)}>Create New Planner</button>
+            {showForm && <CreatePlannerForm onClose={() => setShowForm(false)} />}
         </div>
     );
 };

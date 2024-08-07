@@ -4,6 +4,7 @@ import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { useAuth } from '../Contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import ClassForm from '../Components/ClassForm';
+import './CreatePlannerForm.css';
 
 const CreatePlannerForm = ({ onClose }) => {
     const { currentUser } = useAuth();
@@ -90,15 +91,14 @@ const CreatePlannerForm = ({ onClose }) => {
                 <input type="date" name="endDate" value={plannerDetails.endDate} onChange={handleChange} required />
             </div>
             {plannerDetails.classes.map((cls, index) => (
-                <ClassForm
+                <><ClassForm
                     key={index}
                     classDetails={cls}
                     onChange={(name, value) => handleClassChange(index, name, value)}
                     onMeetingDayChange={(day) => handleMeetingDayChange(index, day)}
-                    onRemove={() => removeClass(index)}
-                />
+                    onRemove={() => removeClass(index)} /><hr /></>
             ))}
-            <button type="button" onClick={addClass}>Add Another Class</button>
+            <button type="button" onClick={addClass}>Add Class</button>
             <button type="submit">Save Planner</button>
         </form>
     );
