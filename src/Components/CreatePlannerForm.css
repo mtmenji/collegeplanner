@@ -19,10 +19,6 @@ hr {
     color: black;
 }
 
-button {
-    margin-top: 10px;
-}
-
 fieldset {
     border: none;
     margin: 10px 0;
@@ -34,4 +30,38 @@ legend {
 
 input[type="checkbox"] {
     margin-right: 5px;
+}
+
+/* Buttons **********************/
+button {
+    margin-top: 10px;
+}
+
+.buttonAdd {
+    background-color: rgb(190, 190, 190);
+}
+
+.buttonAdd:hover {
+    background-color: rgb(148, 148, 148);
+}
+
+.buttonSave {
+    background-color: rgb(115, 203, 115);
+}
+
+.buttonSave:hover {
+    background-color: rgb(91, 163, 91);
+}
+
+.buttonCancel {
+    background-color: rgb(241, 113, 113);
+}
+
+.buttonCancel:hover {
+    background-color: rgb(193, 93, 93);
+}
+
+/* DESKTOP VIEW *******************************************************************************************/
+@media (min-width: 1280px) {
+
 }

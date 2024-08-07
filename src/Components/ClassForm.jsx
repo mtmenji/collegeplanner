@@ -1,5 +1,5 @@
-// components/ClassForm.jsx
 import React from 'react';
+import './ClassForm.css';
 
 const ClassForm = ({ classDetails, onChange, onMeetingDayChange, onRemove }) => {
     const handleChange = (event) => {
@@ -115,7 +115,7 @@ const ClassForm = ({ classDetails, onChange, onMeetingDayChange, onRemove }) => 
                     </div>
                 ))}
             </fieldset>
-            {onRemove && <button type="button" onClick={onRemove}>Remove Class</button>}
+            {onRemove && <button className='buttonRemove' type="button" onClick={onRemove}>Remove Class</button>}
         </div>
     );
 };

@@ -76,6 +76,18 @@ const CreatePlannerForm = ({ onClose }) => {
         navigate(`/planners/${docRef.id}`);  // Redirect to the new planner page
     };
 
+    const handleCancel = () => {
+        // Reset the form values and close the form
+        // setPlannerName('');
+        // setStartDate('');
+        // setEndDate('');
+        // setCourseName('');
+        // setCourseCode('');
+        // setLocation('');
+        // setMeetingTime('');
+        onClose(); // Close the form
+    };
+
     return (
         <form onSubmit={createPlanner} className="plannerForm">
             <div>
@@ -98,8 +110,9 @@ const CreatePlannerForm = ({ onClose }) => {
                     onMeetingDayChange={(day) => handleMeetingDayChange(index, day)}
                     onRemove={() => removeClass(index)} /><hr /></>
             ))}
-            <button type="button" onClick={addClass}>Add Class</button>
-            <button type="submit">Save Planner</button>
+            <button className='buttonAdd' type="button" onClick={addClass}>Add Class</button>
+            <button className='buttonSave' type="submit">Save Planner</button>
+            <button className='buttonCancel' type="button" onClick={handleCancel}>Cancel Planner</button>
         </form>
     );
 };
