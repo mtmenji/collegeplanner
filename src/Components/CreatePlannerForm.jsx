@@ -112,6 +112,7 @@ const CreatePlannerForm = ({ onClose }) => {
             ))}
             <button className='buttonAdd' type="button" onClick={addClass}>Add Class</button>
             <button className='buttonSave' type="submit">Save Planner</button>
+            <hr/>
             <button className='buttonCancel' type="button" onClick={handleCancel}>Cancel Planner</button>
         </form>
     );
