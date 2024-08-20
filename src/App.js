@@ -35,7 +35,6 @@ function App() {
               <Route path='/forgot' element={<ForgotPassword/>}/>
               <Route path='/planners' element={<PrivateRoute><Planners/></PrivateRoute>}/>
               <Route path='/planners/:id' element={<PrivateRoute><Planner/></PrivateRoute>}/>
-              <Route path='/planners/:id/calendar' element={<PrivateRoute><PlannerCalendar/></PrivateRoute>}/>
               <Route path='/planners/:id/settings' element={<PrivateRoute><PlannerSettings/></PrivateRoute>}/>
               <Route path='/planners/:id/:weekid' element={<PrivateRoute><Week/></PrivateRoute>}/>
               <Route path='/create' element={<PrivateRoute><Create/></PrivateRoute>}/>

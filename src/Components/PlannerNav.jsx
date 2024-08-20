@@ -110,13 +110,6 @@ const PlannerNav = ({ refetch }) => {
                 Planner Menu <span className="dropdown-arrow">▼</span>
             </button>
             <div className={`dropdown-menu ${menuOpen ? 'show' : ''}`}>
-                <Link
-                    to={`/planners/${id}/calendar`}
-                    className={`plannerTab ${currentPath.endsWith('calendar') ? 'active' : ''}`}
-                    onClick={() => handleNavLinkClick(`/planners/${id}/calendar`)}
-                >
-                    Calendar
-                </Link>
                 {weeks.map((week, index) => (
                     <Link
                         key={index}
