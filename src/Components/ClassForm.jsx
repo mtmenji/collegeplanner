@@ -11,8 +11,8 @@ const ClassForm = ({ classDetails, onChange, onMeetingDayChange, onRemove }) => 
 
     const [startHours, startMinutes] = classDetails.startTime.split(':').map(val => val.split(' ')[0]);
     const [endHours, endMinutes] = classDetails.endTime.split(':').map(val => val.split(' ')[0]);
-    const startPeriod = classDetails.startTime.split(' ')[1];
-    const endPeriod = classDetails.endTime.split(' ')[1];
+    const startPeriod = classDetails.startTime.split(' ')[1] || "AM";
+    const endPeriod = classDetails.endTime.split(' ')[1] || "AM";
 
     return (
         <div className="class-section">
@@ -46,7 +46,7 @@ const ClassForm = ({ classDetails, onChange, onMeetingDayChange, onRemove }) => 
                     max="59"
                     value={startMinutes}
                     onChange={(e) => {
-                        const value = Math.max(0, Math.min(59, e.target.value));
+                        const value = Math.max(0, Math.min(59, e.target.value)).toString().padStart(2, '0');
                         handleChange({ target: { name: 'startTime', value: `${startHours}:${value} ${startPeriod}` } });
                     }}
                     required
@@ -81,11 +81,11 @@ const ClassForm = ({ classDetails, onChange, onMeetingDayChange, onRemove }) => 
                 <input
                     type="number"
                     name="endMinutes"
-                    min="0"
+                    min="00"
                     max="59"
                     value={endMinutes}
                     onChange={(e) => {
-                        const value = Math.max(0, Math.min(59, e.target.value));
+                        const value = Math.max(0, Math.min(59, e.target.value)).toString().padStart(2, '0');
                         handleChange({ target: { name: 'endTime', value: `${endHours}:${value} ${endPeriod}` } });
                     }}
                     required

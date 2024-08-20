@@ -7,6 +7,5 @@
 - Week.jsx: Mobile Responsiveness.
 
 
-- FIX: Start and End Times - Single digits should have a 0 as the first digit. If user doesn't select AM or FM it should default to AM, not undefined.
 - FIX: Class Days - Update to just show single letter (MTWRF) and keep it in order.
 - FIX: Planner not found message when loading a new page (between Week, PlannerCalendar, and PlannerSettings)
