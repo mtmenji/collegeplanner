@@ -55,13 +55,22 @@ const PlannerSettings = () => {
     };
 
     const handleUpdateClass = async (index, updatedClass) => {
+        // Define the days of the week in the desired order
+        const daysOfWeekOrder = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    
+        // Sort meetingDays for the updated class
+        const sortedClass = {
+            ...updatedClass,
+            meetingDays: updatedClass.meetingDays.sort((a, b) => daysOfWeekOrder.indexOf(a) - daysOfWeekOrder.indexOf(b))
+        };
+    
         const updatedClasses = [...planner.classes];
-        updatedClasses[index] = updatedClass;
+        updatedClasses[index] = sortedClass;
         const plannerDoc = doc(firestore, 'planners', id);
         await updateDoc(plannerDoc, { classes: updatedClasses });
         refetch();
         alert('Class updated successfully!');
-    };
+    };    
 
     const handleDeleteClass = async (index) => {
         if (window.confirm('Are you sure you want to delete this class?')) {
@@ -104,7 +113,16 @@ const PlannerSettings = () => {
     };
 
     const handleAddClass = async () => {
-        const updatedClasses = [...planner.classes, newClassDetails];
+        // Define the days of the week in the desired order
+        const daysOfWeekOrder = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    
+        // Sort meetingDays for the new class
+        const sortedNewClassDetails = {
+            ...newClassDetails,
+            meetingDays: newClassDetails.meetingDays.sort((a, b) => daysOfWeekOrder.indexOf(a) - daysOfWeekOrder.indexOf(b))
+        };
+    
+        const updatedClasses = [...planner.classes, sortedNewClassDetails];
         const plannerDoc = doc(firestore, 'planners', id);
         await updateDoc(plannerDoc, { classes: updatedClasses });
         setIsAddingClass(false);
@@ -120,6 +138,7 @@ const PlannerSettings = () => {
         refetch();
         alert('Class added successfully!');
     };
+    
 
     const handleNewClassChange = (name, value) => {
         setNewClassDetails(prevDetails => ({
@@ -129,14 +148,20 @@ const PlannerSettings = () => {
     };
 
     const handleNewClassMeetingDayChange = (day) => {
+        const daysOfWeekOrder = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const meetingDays = newClassDetails.meetingDays.includes(day)
             ? newClassDetails.meetingDays.filter(d => d !== day)
             : [...newClassDetails.meetingDays, day];
+    
+        // Sort meetingDays
+        const sortedMeetingDays = meetingDays.sort((a, b) => daysOfWeekOrder.indexOf(a) - daysOfWeekOrder.indexOf(b));
+    
         setNewClassDetails(prevDetails => ({
             ...prevDetails,
-            meetingDays
+            meetingDays: sortedMeetingDays
         }));
     };
+    
 
     const handleCancelAddClass = () => {
         setIsAddingClass(false);

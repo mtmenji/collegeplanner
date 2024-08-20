@@ -7,5 +7,5 @@
 - Week.jsx: Mobile Responsiveness.
 
 
-- FIX: Class Days - Update to just show single letter (MTWRF) and keep it in order.
 - FIX: Planner not found message when loading a new page (between Week, PlannerCalendar, and PlannerSettings)
+- FIX: When users add a new task (after the first one) it creates a duplicate box.

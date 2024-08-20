@@ -27,6 +27,19 @@ const formatDate = (date) => {
     return new Intl.DateTimeFormat('en-US', options).format(date);
 };
 
+const dayAbbreviations = {
+    Sunday: 'Su',
+    Monday: 'M',
+    Tuesday: 'T',
+    Wednesday: 'W',
+    Thursday: 'R',
+    Friday: 'F',
+    Saturday: 'Sa'
+};
+const abbreviateDays = (days) => {
+    return days.map(day => dayAbbreviations[day]).join('');
+};
+
 const Week = () => {
     const { id, weekid } = useParams();
     const { planner, loading } = usePlanner(id);
@@ -298,7 +311,7 @@ const Week = () => {
                             <div className={`courseDetails ${showDetails ? 'show' : 'hide'}`}>
                                 <div>{cls.className}</div>
                                 <div>{cls.location}</div>
-                                <div>{cls.meetingDays}</div>
+                                <div>{abbreviateDays(cls.meetingDays)}</div>
                                 <div>{cls.startTime} - {cls.endTime}</div>
                             </div>
                         </div>

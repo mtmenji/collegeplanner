@@ -1,4 +1,3 @@
-import React from 'react';
 import './ClassForm.css';
 
 const ClassForm = ({ classDetails, onChange, onMeetingDayChange, onRemove }) => {

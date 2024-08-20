@@ -66,9 +66,17 @@ const CreatePlannerForm = ({ onClose }) => {
 
     const createPlanner = async (e) => {
         e.preventDefault();
+
+        const daysOfWeekOrder = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const sortedClasses = plannerDetails.classes.map(cls => ({
+            ...cls,
+            meetingDays: cls.meetingDays.sort((a, b) => daysOfWeekOrder.indexOf(a) - daysOfWeekOrder.indexOf(b))
+        }));
+
         const plannersCollection = collection(firestore, 'planners');
         const docRef = await addDoc(plannersCollection, {
             ...plannerDetails,
+            selectedDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
             userId: currentUser.uid,
             createdAt: new Date()
         });
@@ -77,14 +85,6 @@ const CreatePlannerForm = ({ onClose }) => {
     };
 
     const handleCancel = () => {
-        // Reset the form values and close the form
-        // setPlannerName('');
-        // setStartDate('');
-        // setEndDate('');
-        // setCourseName('');
-        // setCourseCode('');
-        // setLocation('');
-        // setMeetingTime('');
         onClose(); // Close the form
     };
 
