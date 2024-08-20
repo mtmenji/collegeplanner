@@ -61,7 +61,12 @@ const Week = () => {
             if (!Array.isArray(newContents[cellKey])) {
                 newContents[cellKey] = [];
             }
-            newContents[cellKey].push(newTask);
+            // newContents[cellKey].push(newTask);
+            // return newContents;
+            const taskExists = newContents[cellKey].some(task => task.id === newTaskId);
+            if (!taskExists) {
+                newContents[cellKey].push(newTask);
+            }
             return newContents;
         });
     

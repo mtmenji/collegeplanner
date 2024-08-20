@@ -8,4 +8,3 @@
 
 
 - FIX: Planner not found message when loading a new page (between Week, PlannerCalendar, and PlannerSettings)
-- FIX: When users add a new task (after the first one) it creates a duplicate box.
