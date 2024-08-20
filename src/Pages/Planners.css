@@ -1,4 +1,3 @@
-/* CSS */
 .plannersPage {
     display: flex;
     flex-direction: column;
@@ -11,7 +10,9 @@
 }
 
 .plannersPage ul {
-    padding: 0 40px;
+    padding: 40px 20px;
+    background: #ece9e8;
+    border-radius: 25px;
 }
 
 .plannerList {

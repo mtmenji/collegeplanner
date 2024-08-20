@@ -47,7 +47,7 @@ const Planners = () => {
     return (
         <div className="plannersPage">
             <h1>Planners</h1>
-            <ul>
+            <ul className="plannersBackground">
                 {planners.map(planner => (
                     <li className="plannerList" key={planner.id}>
                     {planner.lastRoute ? (
