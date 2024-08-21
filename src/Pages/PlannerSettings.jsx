@@ -218,17 +218,20 @@ const PlannerSettings = () => {
                     />
                 </div>
                 <div>
-                    <label><strong>Select Days:</strong></label>
-                    {daysOfWeek.map(day => (
-                        <div key={day}>
-                            <input
-                                type="checkbox"
-                                checked={selectedDays.includes(day)}
-                                onChange={() => handleDayChange(day)}
-                            />
-                            {day}
-                        </div>
-                    ))}
+                    <label><strong>Select Days To Appear On Planner:</strong></label>
+                    <div className="days-of-week">
+                        {daysOfWeek.map(day => (
+                            <div key={day}>
+                                <input
+                                    type="checkbox"
+                                    id={day}
+                                    checked={selectedDays.includes(day)}
+                                    onChange={() => handleDayChange(day)}
+                                />
+                                <label htmlFor={day}>{day}</label>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <button onClick={handleSavePlannerDetails}>Save Planner Details</button>
                 <hr/>

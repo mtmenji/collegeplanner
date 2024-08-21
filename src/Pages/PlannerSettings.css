@@ -33,12 +33,58 @@
     box-sizing: border-box;
 }
 
-.plannerSettingsContent input[type="checkbox"] {
-    margin-right: 8px;
-}
-
 .plannerSettingsContent div {
     margin-bottom: 15px;
+}
+
+/* Grid layout for checkboxes */
+.plannerSettingsContent .days-of-week {
+    display: grid; /* Use grid layout */
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    /* grid-template-columns: repeat(7, 1fr); */
+    gap: 10px; /* Space between items */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    list-style: none; /* Remove default list styling */
+}
+
+/* Ensure equal length for each button */
+.plannerSettingsContent .days-of-week div {
+    display: flex; /* Flex layout for each day item */
+    flex: 1; /* Make items flexible */
+}
+
+/* Styling for labels */
+.plannerSettingsContent .days-of-week label {
+    display: flex; /* Flex layout for centering content */
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+    padding: 10px; /* Padding inside the label */
+    border: 1px solid #ddd; /* Border around the label */
+    border-radius: 4px; /* Rounded corners */
+    background: #f4f4f4; /* Light gray background */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition for hover effect */
+    width: 100%; /* Full width of the grid cell */
+    text-align: center; /* Center text horizontally */
+}
+
+.plannerSettingsContent .days-of-week input[type="checkbox"] {
+    display: none; /* Hide the default checkbox */
+}
+
+.plannerSettingsContent .days-of-week input[type="checkbox"]:checked + label {
+    background: #007bff; /* Primary color background for checked state */
+    border-color: #0056b3; /* Darker border for checked state */
+    color: #ffffff; /* White text color for checked state */
+}
+
+.plannerSettingsContent .days-of-week label:hover {
+    background: #e9ecef; /* Slightly darker background on hover */
+}
+
+.plannerSettingsContent .days-of-week input[type="checkbox"]:checked + label:hover {
+    background: #0056b3; /* Darker background on hover when checked */
 }
 
 /* Buttons */

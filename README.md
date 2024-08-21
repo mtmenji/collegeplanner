@@ -4,11 +4,7 @@
 - Add a feature to print the planner.
 - PlannerSettings.jsx: Styles and Responsiveness
 - Week.jsx: Mobile Responsiveness.
-
+- Hamburger Menu needs an X to close menu.
 
 - FIX: Planner not found message when loading a new page (between Week, PlannerCalendar, and PlannerSettings)
-
-- If no login, redirect to Login Page. If yes login, redirect to last url route.
-- Where should I direct user with no planners?
-- If they aren't in a specific planner and there's no week tabs, where do I show the Settings tab?
-- If user has no last route, then redirect to create a planner page. But what if user deletes their last planner?
+- FIX: Menus aren't completely covering other elements.
