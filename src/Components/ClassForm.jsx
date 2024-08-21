@@ -35,7 +35,7 @@ const ClassForm = ({ classDetails, onChange, onMeetingDayChange, onRemove }) => 
                         handleChange({ target: { name: 'startTime', value: `${value}:${startMinutes} ${startPeriod}` } });
                     }}
                     required
-                    placeholder="Hour"
+                    placeholder="H"
                 />
                 :
                 <input
@@ -49,7 +49,7 @@ const ClassForm = ({ classDetails, onChange, onMeetingDayChange, onRemove }) => 
                         handleChange({ target: { name: 'startTime', value: `${startHours}:${value} ${startPeriod}` } });
                     }}
                     required
-                    placeholder="Minutes"
+                    placeholder="M"
                 />
                 <select
                     name="startPeriod"
@@ -74,7 +74,7 @@ const ClassForm = ({ classDetails, onChange, onMeetingDayChange, onRemove }) => 
                         handleChange({ target: { name: 'endTime', value: `${value}:${endMinutes} ${endPeriod}` } });
                     }}
                     required
-                    placeholder="Hour"
+                    placeholder="H"
                 />
                 :
                 <input
@@ -88,7 +88,7 @@ const ClassForm = ({ classDetails, onChange, onMeetingDayChange, onRemove }) => 
                         handleChange({ target: { name: 'endTime', value: `${endHours}:${value} ${endPeriod}` } });
                     }}
                     required
-                    placeholder="Minutes"
+                    placeholder="M"
                 />
                 <select
                     name="endPeriod"

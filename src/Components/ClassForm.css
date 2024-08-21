@@ -57,7 +57,8 @@
 /* Grid layout for checkboxes */
 .class-section .days-of-week {
     display: grid; /* Use grid layout */
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); /* Responsive grid columns */
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    /* grid-template-columns: repeat(7, 1fr); */
     gap: 10px; /* Space between items */
     margin: 0; /* Remove default margin */
     padding: 0; /* Remove default padding */
