@@ -81,14 +81,15 @@ function Navbar() {
       <div className="navbar-logo">{plannerName ? plannerName : 'College Planner'}</div>
       <div className={`navbar-links ${isOpen ? 'open' : ''}`}>
         <ul>
-          <li><a href="/planners" onClick={handleLinkClick}>Planners</a></li>
-          <li><a href="/settings" onClick={handleLinkClick}>Account Settings</a></li>
+
           {currentUser ? (
             <>
+              <li><a href="/planners" onClick={handleLinkClick}>Planners</a></li>
+              <li><a href="/settings" onClick={handleLinkClick}>Account Settings</a></li>
               <li><a href="/login" onClick={handleSignOut}>Log Out</a></li>
             </>
           ) : (
-            <li><a href="/login" onClick={handleLinkClick}>Log In</a></li>
+            <li><a href="/register" onClick={handleLinkClick}>Click Here to Sign Up!</a></li>
           )}
         </ul>
       </div>
