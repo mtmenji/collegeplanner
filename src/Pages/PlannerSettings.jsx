@@ -233,7 +233,9 @@ const PlannerSettings = () => {
                         ))}
                     </div>
                 </div>
-                <button onClick={handleSavePlannerDetails}>Save Planner Details</button>
+                <div className="saveButton">
+                    <button onClick={handleSavePlannerDetails}>Save Planner Details</button>
+                </div>
                 <hr/>
                 {planner.classes && isEditingClass && (
                     <EditClassForm
@@ -255,8 +257,10 @@ const PlannerSettings = () => {
                             onChange={handleNewClassChange}
                             onMeetingDayChange={handleNewClassMeetingDayChange}
                         />
-                        <button onClick={handleAddClass}>Save</button>
-                        <button onClick={handleCancelAddClass}>Cancel</button>
+                        <div className="menuButtons">
+                            <button className="cancelButton" onClick={handleCancelAddClass}>Cancel</button>
+                            <button onClick={handleAddClass}>Save</button>
+                        </div>
                     </div>
                 )}
             </div>

@@ -1,5 +1,5 @@
 # To do
-- AccountSettings.jsx: Create this page to allow the user to update display name and color settings!
+- AccountSettings.jsx: Create this page to allow the user to update display name, color settings, and password.
 - Planner.jsx: Create a feature for overdue unchecked tasks to create a notification in app. The user can clear out the task manually, check it off, or edit the task which will remove the overdue message.
 - Add a feature to print the planner.
 - PlannerSettings.jsx: Styles and Responsiveness

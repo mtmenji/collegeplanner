@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ClassForm from './ClassForm';
+import './EditClassForm.css';
 
 const EditClassForm = ({ classes, selectedClassIndex, onSelectClass, onUpdateClass, onDeleteClass }) => {
     const [classDetails, setClassDetails] = useState(classes[selectedClassIndex] || {});
@@ -37,7 +38,7 @@ const EditClassForm = ({ classes, selectedClassIndex, onSelectClass, onUpdateCla
     };
 
     return (
-        <div>
+        <div className="editClassFormSection">
             <h1>Edit Class Details</h1>
             <label htmlFor="class-select">Select a class: </label>
             <select id="class-select" value={selectedClassIndex} onChange={handleSelectChange}>
@@ -55,8 +56,10 @@ const EditClassForm = ({ classes, selectedClassIndex, onSelectClass, onUpdateCla
                         onChange={handleChange}
                         onMeetingDayChange={handleMeetingDayChange}
                     />
-                    <button onClick={handleSave}>Save Changes to {classDetails.courseCode}</button>
-                    <button onClick={handleDelete}>Delete {classDetails.courseCode}</button>
+                    <div className="editClassFormButtons">
+                        <button className="deleteButton" onClick={handleDelete}>Delete {classDetails.courseCode}</button>
+                        <button onClick={handleSave}>Save Changes to {classDetails.courseCode}</button>
+                    </div>
                 </div>
             )}
         </div>

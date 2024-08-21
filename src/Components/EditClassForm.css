@@ -1,0 +1,16 @@
+.editClassFormSection .deleteButton {
+    background-color: #ff5f6c;
+}
+
+.editClassFormSection.deleteButton:hover {
+    background-color: #f84453;
+}
+
+.editClassFormButtons {
+    display: flex;
+    justify-content: end;
+}
+
+select#class-select {
+    margin-bottom: 2vh;
+}

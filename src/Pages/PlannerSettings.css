@@ -127,6 +127,24 @@
     margin-bottom: 15px;
 }
 
+.saveButton {
+    display: flex;
+    justify-content: end;
+}
+
+.plannerSettingsContent .menuButtons {
+    display: flex;
+    justify-content: end;
+}
+
+.menuButtons .cancelButton {
+    background-color: #ff5f6c;
+}
+
+.menuButtons .cancelButton:hover {
+    background-color: #f84453;
+}
+
 /* Responsive Design */
 @media (max-width: 600px) {
     .plannerSettingsContent {
@@ -140,5 +158,12 @@
 
     .plannerSettingsContent .add-class-form h1 {
         font-size: 18px;
+    }
+}
+
+@media (min-width: 840px) {
+    .plannerSettingsContent {
+        margin-top: 5vh;
+        margin-bottom: 5vh;
     }
 }
