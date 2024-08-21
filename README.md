@@ -8,3 +8,4 @@
 
 - FIX: Planner not found message when loading a new page (between Week, PlannerCalendar, and PlannerSettings)
 - FIX: Menus aren't completely covering other elements.
+- FIX: Day selection for EditClass or AddClass in PlannerSettings are affecting each other.
