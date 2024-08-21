@@ -85,7 +85,7 @@ function Navbar() {
           <li><a href="/settings" onClick={handleLinkClick}>Account Settings</a></li>
           {currentUser ? (
             <>
-              <li><a href="#!" onClick={handleSignOut}>Log Out</a></li>
+              <li><a href="/login" onClick={handleSignOut}>Log Out</a></li>
             </>
           ) : (
             <li><a href="/login" onClick={handleLinkClick}>Log In</a></li>
