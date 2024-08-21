@@ -82,7 +82,7 @@ function Navbar() {
       <div className={`navbar-links ${isOpen ? 'open' : ''}`}>
         <ul>
           <li><a href="/planners" onClick={handleLinkClick}>Planners</a></li>
-          <li><a href="/settings" onClick={handleLinkClick}>Settings</a></li>
+          <li><a href="/settings" onClick={handleLinkClick}>Account Settings</a></li>
           {currentUser ? (
             <>
               <li><a href="#!" onClick={handleSignOut}>Log Out</a></li>

@@ -133,7 +133,7 @@ const PlannerNav = ({ refetch }) => {
                     className={`plannerTab ${currentPath.endsWith('settings') ? 'active' : ''}`}
                     onClick={() => handleNavLinkClick(`/planners/${id}/settings`)}
                 >
-                    Settings
+                    Planner Settings
                 </Link>
             </div>
         </nav>
