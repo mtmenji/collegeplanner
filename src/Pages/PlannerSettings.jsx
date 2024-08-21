@@ -6,8 +6,11 @@ import './PlannerSettings.css';
 import usePlanner from '../Hooks/usePlanner';
 import EditClassForm from '../Components/EditClassForm';
 import ClassForm from '../Components/ClassForm';
+import { usePlannerContext } from '../Contexts/PlannerContext';
+
 
 const PlannerSettings = () => {
+    const { setPlannerName } = usePlannerContext();
     const { id } = useParams();
     const { planner, loading, refetch } = usePlanner(id);
     const firestore = getFirestore();
@@ -39,6 +42,7 @@ const PlannerSettings = () => {
                 endDate: planner.endDate
             });
             setSelectedDays(planner.selectedDays || []);
+            setPlannerName(planner.name);
         }
     }, [planner]);
 

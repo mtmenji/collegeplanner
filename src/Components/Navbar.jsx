@@ -2,9 +2,13 @@ import React, { useRef, useState, useEffect } from 'react';
 import './Navbar.css';
 import { useAuth } from '../Contexts/AuthContext';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { usePlannerContext } from '../Contexts/PlannerContext';
 const firestore = getFirestore();
 
 function Navbar() {
+
+    /* Header ************************************************************************************/
+    const { plannerName } = usePlannerContext();
 
     /* Humburger Menu Functionality **************************************************************/
     const [isOpen, setIsOpen] = useState(false);
@@ -74,7 +78,7 @@ function Navbar() {
   /*** HTML Return Statement**************************************************************************/
   return (
     <nav className="navbar">
-      <div className="navbar-logo">College Planner</div>
+      <div className="navbar-logo">{plannerName ? plannerName : 'College Planner'}</div>
       <div className={`navbar-links ${isOpen ? 'open' : ''}`}>
         <ul>
           <li><a href="/planners" onClick={handleLinkClick}>Planners</a></li>

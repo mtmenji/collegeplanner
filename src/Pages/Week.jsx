@@ -5,6 +5,7 @@ import './Week.css';
 import PlannerNav from '../Components/PlannerNav';
 import usePlanner from '../Hooks/usePlanner';
 import { v4 as uuidv4 } from 'uuid';
+import { usePlannerContext } from '../Contexts/PlannerContext';
 
 const getWeekDates = (startDateStr, weekIndex) => {
     const startDate = new Date(startDateStr);
@@ -43,6 +44,7 @@ const abbreviateDays = (days) => {
 const Week = () => {
     const { id, weekid } = useParams();
     const { planner, loading } = usePlanner(id);
+    const { setPlannerName } = usePlannerContext();
     const [showDetails, setShowDetails] = useState(false);
     const [cellsContent, setCellsContent] = useState({});
     const [inputValues, setInputValues] = useState({});
@@ -249,8 +251,9 @@ const Week = () => {
         if (planner) {
             const selectedDays = planner.selectedDays || [];
             document.documentElement.style.setProperty('--columns-count', selectedDays.length + 1);
+            setPlannerName(planner.name);
         }
-    }, [planner]);
+    }, [planner, setPlannerName]);
 
     const fetchTasks = async () => {
         if (planner) {
