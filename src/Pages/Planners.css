@@ -56,6 +56,12 @@
     background: #0160c5;
 }
 
+.buttonCreate.disabled {
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
 .loading {
     text-align: center;
     font-size: 18px;

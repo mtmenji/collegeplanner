@@ -61,7 +61,7 @@ const Planners = () => {
                     </li>
                 ))}
             </ul>
-            <button className="buttonCreate" onClick={() => setShowForm(true)}>Create New Planner</button>
+            <button className={`buttonCreate ${showForm ? 'disabled' : ''}`} onClick={() => setShowForm(true)} disabled={showForm}>Create New Planner</button>
             {showForm && <CreatePlannerForm onClose={() => setShowForm(false)} />}
         </div>
     );
