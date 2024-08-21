@@ -191,12 +191,10 @@ const Week = () => {
             return newContents;
         });
     
-        // Assuming `getWeekDates` is a function to get the week's dates based on planner start date and week index
+
         const weekIndex = parseInt(weekid.replace('week', ''), 10);
         const weekDates = getWeekDates(planner.startDate, weekIndex);
-        
-        // `cellKey` may need to relate to a specific day in the week
-        const dayIndex = parseInt(cellKey); // Assuming cellKey is a number representing the day index
+        const dayIndex = parseInt(cellKey);
         const taskDate = weekDates[dayIndex]?.toISOString().split('T')[0];
     
         if (!taskDate) {
