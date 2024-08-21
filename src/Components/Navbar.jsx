@@ -77,18 +77,11 @@ function Navbar() {
       <div className="navbar-logo">College Planner</div>
       <div className={`navbar-links ${isOpen ? 'open' : ''}`}>
         <ul>
-          <li><a href="/" onClick={handleLinkClick}>Home</a></li>
           <li><a href="/planners" onClick={handleLinkClick}>Planners</a></li>
           <li><a href="/settings" onClick={handleLinkClick}>Settings</a></li>
-          <li>
-            <a href="#!" onClick={toggleDarkMode}>
-              {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-            </a>
-          </li>
           {currentUser ? (
             <>
               <li><a href="#!" onClick={handleSignOut}>Log Out</a></li>
-              <li><span>Hello, {userName}!</span></li>
             </>
           ) : (
             <li><a href="/login" onClick={handleLinkClick}>Log In</a></li>
