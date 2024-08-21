@@ -41,20 +41,22 @@ const Planners = () => {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="loading">Loading...</div>;
     }
 
     return (
         <div className="plannersPage">
             <h1>Planners</h1>
-            <ul>
+            <ul className="plannerList">
                 {planners.map(planner => (
-                    <li className="plannerList" key={planner.id}>
-                    {planner.lastRoute ? (
-                        <a href={planner.lastRoute}>{planner.name}</a>
-                    ) : (
-                        <a href={`/planners/${planner.id}/settings`}>Planner {planner.name}</a>
-                    )}
+                    <li className="plannerCard" key={planner.id}>
+                        <div className="plannerDetails">
+                            {planner.lastRoute ? (
+                                <a href={planner.lastRoute}>{planner.name}</a>
+                            ) : (
+                                <a href={`/planners/${planner.id}/settings`}>Planner {planner.name}</a>
+                            )}
+                        </div>
                     <button className="buttonDelete" onClick={() => handleDelete(planner.id)}>×</button>
                     </li>
                 ))}

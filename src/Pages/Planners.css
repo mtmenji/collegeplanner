@@ -1,82 +1,62 @@
 .plannersPage {
-    display: flex;
-    flex-direction: column;
-
-}
-
-.plannersPage h1 {
-    text-align: center;
-    text-decoration: underline;
-}
-
-.plannersPage ul {
-    padding: 20px 20px;
-    background: #ece9e8;
-    border-radius: 25px;
-    margin: 10px;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
 }
 
 .plannerList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.plannerCard {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
-    margin-bottom: 1vh;
+    justify-content: space-between;
     align-items: center;
 }
 
-.plannerList a {
+.plannerDetails {
+    flex: 1;
+    display: flex;
+}
+
+.plannerDetails a {
+    color: #333;
     text-decoration: none;
-    color: black;
-    flex-grow: 1;
-    background-color: #c8b5a9;
-    text-align: center;
-    margin: 0 10px;
-    padding: 6px 14px;
-    border-radius: 6px;
-}
-
-.plannerList a:hover {
-    background-color: #ae9e93;
-}
-
-.plannersPage button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 6px 14px;
-  border-radius: 6px;
-  border: none;
-  box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1), inset 0px 0.5px 0.5px rgba(255, 255, 255, 0.5), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.12);
-}
-
-.buttonCreate {
-    background: #D5BDAF;
-    color: black;
-    width: 75%;
-    align-self:  center;
-    justify-self: center;
-}
-
-.buttonCreate:hover {
-    background: #a59287;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
 }
 
 .buttonDelete {
-    background: #c00;
+    background: red;
     color: white;
-    margin: auto;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
 }
 
-.buttonDelete:hover {
-    background: rgb(147, 1, 1);
+.buttonCreate {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
-/* DESKTOP VIEW *******************************************************************************************/
-@media (min-width: 1280px) {
-    .plannersPage {
-        margin: auto;
-        max-width: 800px;
-    }
+.buttonCreate:hover {
+    background: #0160c5;
+}
 
-    .plannerList a {
-        margin: 0 50px;
-    }
+.loading {
+    text-align: center;
+    font-size: 18px;
 }

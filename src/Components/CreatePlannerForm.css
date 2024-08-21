@@ -1,68 +1,84 @@
+/* CreatePlannerForm.css */
+
 .plannerForm {
-    background-color: #f4f4f4;
-    padding: 20px;
+    background: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
     display: flex;
     flex-direction: column;
 }
 
-.class-section {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-}
-
-hr {
-    width: 100%;
-    color: black;
-}
-
-fieldset {
-    border: none;
-    margin: 10px 0;
-}
-
-legend {
+.plannerForm h2 {
+    font-size: 1.5rem;
     font-weight: bold;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+    background: linear-gradient(to right, #f0f0f0, #ffffff);
 }
 
-input[type="checkbox"] {
-    margin-right: 5px;
+.plannerForm div {
+    margin-bottom: 15px;
 }
 
-/* Buttons **********************/
-button {
-    margin-top: 10px;
-    margin-bottom: 10px;
+.plannerForm label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.plannerForm input[type="text"],
+.plannerForm input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.plannerForm button {
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 20px;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
 }
 
 .buttonAdd {
-    background-color: rgb(190, 190, 190);
+    background: #007bff;
 }
 
 .buttonAdd:hover {
-    background-color: rgb(148, 148, 148);
+    background: #0056b3;
 }
 
 .buttonSave {
-    background-color: rgb(115, 203, 115);
+    background: #28a745;
 }
 
 .buttonSave:hover {
-    background-color: rgb(91, 163, 91);
+    background: #218838;
 }
 
 .buttonCancel {
-    background-color: rgb(241, 113, 113);
+    background: #dc3545;
 }
 
 .buttonCancel:hover {
-    background-color: rgb(193, 93, 93);
+    background: #c82333;
 }
 
-/* DESKTOP VIEW *******************************************************************************************/
-@media (min-width: 1280px) {
-
+hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid #ddd;
 }

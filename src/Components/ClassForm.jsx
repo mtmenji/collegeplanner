@@ -102,17 +102,19 @@ const ClassForm = ({ classDetails, onChange, onMeetingDayChange, onRemove }) => 
 
             <fieldset>
                 <legend>Meeting Days:</legend>
-                {daysOfWeek.map(day => (
-                    <div key={day}>
-                        <input
-                            type="checkbox"
-                            id={day}
-                            checked={classDetails.meetingDays.includes(day)}
-                            onChange={() => onMeetingDayChange(day)}
-                        />
-                        <label htmlFor={day}>{day}</label>
-                    </div>
-                ))}
+                <div className="days-of-week">
+                    {daysOfWeek.map(day => (
+                        <div key={day}>
+                            <input
+                                type="checkbox"
+                                id={day}
+                                checked={classDetails.meetingDays.includes(day)}
+                                onChange={() => onMeetingDayChange(day)}
+                            />
+                            <label htmlFor={day}>{day}</label>
+                        </div>
+                    ))}
+                </div>
             </fieldset>
             {onRemove && <button className='buttonRemove' type="button" onClick={onRemove}>Remove Class</button>}
         </div>

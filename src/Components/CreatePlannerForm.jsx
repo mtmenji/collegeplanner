@@ -90,6 +90,7 @@ const CreatePlannerForm = ({ onClose }) => {
 
     return (
         <form onSubmit={createPlanner} className="plannerForm">
+            <h2>General Details</h2>
             <div>
                 <label>Name of Planner:</label>
                 <input type="text" name="name" value={plannerDetails.name} onChange={handleChange} required />
@@ -102,6 +103,7 @@ const CreatePlannerForm = ({ onClose }) => {
                 <label>End Date:</label>
                 <input type="date" name="endDate" value={plannerDetails.endDate} onChange={handleChange} required />
             </div>
+            <h2>Class Details</h2>
             {plannerDetails.classes.map((cls, index) => (
                 <><ClassForm
                     key={index}
