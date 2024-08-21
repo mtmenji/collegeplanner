@@ -315,9 +315,9 @@ const Week = () => {
                             <div className="courseCode">{cls.courseCode}</div>
                             <div className={`courseDetails ${showDetails ? 'show' : 'hide'}`}>
                                 <div>{cls.className}</div>
-                                <div>{cls.location}</div>
-                                <div>{abbreviateDays(cls.meetingDays)}</div>
-                                <div>{cls.startTime} - {cls.endTime}</div>
+                                <div>&#128205;{cls.location}</div>
+                                <div>&#128197;{abbreviateDays(cls.meetingDays)}</div>
+                                <div>&#128338;{cls.startTime} - {cls.endTime}</div>
                             </div>
                         </div>
                         {selectedDayIndices.map((dayIndex) => {
