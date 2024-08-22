@@ -48,10 +48,15 @@ const Week = () => {
     const [showDetails, setShowDetails] = useState(false);
     const [cellsContent, setCellsContent] = useState({});
     const [inputValues, setInputValues] = useState({});
+    const [selectedClass, setSelectedClass] = useState('');
     const firestore = getFirestore();
 
     const toggleDetails = () => {
         setShowDetails(prev => !prev);
+    };
+
+    const handleClassChange = (event) => {
+        setSelectedClass(event.target.value);
     };
 
     const handleAddContent = (cellKey) => {
@@ -301,6 +306,12 @@ const Week = () => {
         <div className="weekPage">
             <PlannerNav plannerId={id}/>
             <div className={`plannerGrid ${showDetails ? 'showDetails' : 'hideDetails'}`}>
+                <select className="classDropdown" onChange={handleClassChange} value={selectedClass}>
+                    <option value="">All Classes</option>
+                    {planner.classes.map((cls, index) => (
+                        <option key={index} value={cls.name}>{cls.className}</option>
+                    ))}
+                </select>
                 <button className="gridHeader" onClick={toggleDetails}>
                     {showDetails ? 'Hide' : 'Show'}
                 </button>
@@ -310,64 +321,67 @@ const Week = () => {
                         <div className="dayDate">{formatDate(weekDates[index])}</div>
                     </div>
                 ))}
-                {planner.classes && planner.classes.map((cls, classIndex) => (
+                {planner.classes && planner.classes.filter(cls => selectedClass === "" || cls.className === selectedClass).map((cls, classIndex) => (
                     <React.Fragment key={classIndex}>
-                        <div className="courseGrid">
-                            <div className="courseCode">{cls.courseCode}</div>
-                            <div className={`courseDetails ${showDetails ? 'show' : 'hide'}`}>
-                                <div>{cls.className}</div>
-                                <hr/>
-                                <div>&#128205;{cls.location}</div>
-                                <div>&#128197;{abbreviateDays(cls.meetingDays)}</div>
-                                <div>&#128338;{cls.startTime} - {cls.endTime}</div>
-                            </div>
-                        </div>
-                        {selectedDayIndices.map((dayIndex) => {
-                            const cellKey = `${classIndex}-${dayIndex}`;
-                            return (
-                                <div key={cellKey} className="gridCell">
-                                    {Array.isArray(cellsContent[cellKey]) && cellsContent[cellKey].map((task) => (
-                                        <div key={task.id} className={`contentWrapper cellItem ${task.completed ? 'completed' : ''}`}>
-                                            <input
-                                                type="checkbox"
-                                                checked={task.completed}
-                                                onChange={() => handleToggleComplete(cellKey, task.id)}
-                                                className="taskCheckbox"
-                                            />
-                                            {task.editing ? (
-                                                <input
-                                                    type="text"
-                                                    value={inputValues[cellKey] || ''}
-                                                    onChange={(e) => handleInputChange(cellKey, task.id, e.target.value)}
-                                                    onBlur={() => handleInputBlur(cellKey, task.id)}
-                                                    autoFocus
-                                                    className="taskInput"
-                                                />
-                                            ) : (
-                                                <div className="taskText" onClick={() => handleEditContent(cellKey, task.id)}>
-                                                    {task.text}
-                                                </div>
-                                            )}
-                                            <div className="gridCellButtons">
-                                                <button 
-                                                    className="editButton" 
-                                                    onClick={() => handleEditContent(cellKey, task.id)}
-                                                >
-                                                    ✎
-                                                </button>
-                                                <button 
-                                                    className="removeButton" 
-                                                    onClick={() => handleRemoveContent(cellKey, task.id)}
-                                                >
-                                                    ×
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                    <button className="addButton" onClick={() => handleAddContent(cellKey, classIndex, dayIndex)}>+</button>
+                        <section className={`courseRow ${showDetails ? 'showDetails' : 'hideDetails'}`}>
+                            <div className="courseGrid">
+                                <div className="courseCode">{cls.courseCode}</div>
+                                <div className={`courseDetails ${showDetails ? 'show' : 'hide'}`}>
+                                    <div>{cls.className}</div>
+                                    <hr/>
+                                    <div>&#128205;{cls.location}</div>
+                                    <div>&#128197;{abbreviateDays(cls.meetingDays)}</div>
+                                    <div>&#128338;{cls.startTime} - {cls.endTime}</div>
                                 </div>
-                            );
-                        })}
+                            </div>
+                            {selectedDayIndices.map((dayIndex) => {
+                                const cellKey = `${classIndex}-${dayIndex}`;
+                                return (
+                                    <div key={cellKey} className="gridCell">
+                                        <h2 className="dayOfWeekMobile">{daysOfWeek[dayIndex]} ({formatDate(weekDates[dayIndex])})</h2>
+                                        {Array.isArray(cellsContent[cellKey]) && cellsContent[cellKey].map((task) => (
+                                            <div key={task.id} className={`contentWrapper cellItem ${task.completed ? 'completed' : ''}`}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={task.completed}
+                                                    onChange={() => handleToggleComplete(cellKey, task.id)}
+                                                    className="taskCheckbox"
+                                                />
+                                                {task.editing ? (
+                                                    <input
+                                                        type="text"
+                                                        value={inputValues[cellKey] || ''}
+                                                        onChange={(e) => handleInputChange(cellKey, task.id, e.target.value)}
+                                                        onBlur={() => handleInputBlur(cellKey, task.id)}
+                                                        autoFocus
+                                                        className="taskInput"
+                                                    />
+                                                ) : (
+                                                    <div className="taskText" onClick={() => handleEditContent(cellKey, task.id)}>
+                                                        {task.text}
+                                                    </div>
+                                                )}
+                                                <div className="gridCellButtons">
+                                                    <button 
+                                                        className="editButton" 
+                                                        onClick={() => handleEditContent(cellKey, task.id)}
+                                                    >
+                                                        ✎
+                                                    </button>
+                                                    <button 
+                                                        className="removeButton" 
+                                                        onClick={() => handleRemoveContent(cellKey, task.id)}
+                                                    >
+                                                        ×
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        <button className="addButton" onClick={() => handleAddContent(cellKey, classIndex, dayIndex)}>+</button>
+                                    </div>
+                                );
+                            })}
+                        </section>
                     </React.Fragment>
                 ))}
             </div>
