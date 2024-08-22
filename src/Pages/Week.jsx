@@ -312,62 +312,64 @@ const Week = () => {
                 ))}
                 {planner.classes && planner.classes.map((cls, classIndex) => (
                     <React.Fragment key={classIndex}>
-                        <div className="courseGrid">
-                            <div className="courseCode">{cls.courseCode}</div>
-                            <div className={`courseDetails ${showDetails ? 'show' : 'hide'}`}>
-                                <div>{cls.className}</div>
-                                <hr/>
-                                <div>&#128205;{cls.location}</div>
-                                <div>&#128197;{abbreviateDays(cls.meetingDays)}</div>
-                                <div>&#128338;{cls.startTime} - {cls.endTime}</div>
-                            </div>
-                        </div>
-                        {selectedDayIndices.map((dayIndex) => {
-                            const cellKey = `${classIndex}-${dayIndex}`;
-                            return (
-                                <div key={cellKey} className="gridCell">
-                                    {Array.isArray(cellsContent[cellKey]) && cellsContent[cellKey].map((task) => (
-                                        <div key={task.id} className={`contentWrapper cellItem ${task.completed ? 'completed' : ''}`}>
-                                            <input
-                                                type="checkbox"
-                                                checked={task.completed}
-                                                onChange={() => handleToggleComplete(cellKey, task.id)}
-                                                className="taskCheckbox"
-                                            />
-                                            {task.editing ? (
-                                                <input
-                                                    type="text"
-                                                    value={inputValues[cellKey] || ''}
-                                                    onChange={(e) => handleInputChange(cellKey, task.id, e.target.value)}
-                                                    onBlur={() => handleInputBlur(cellKey, task.id)}
-                                                    autoFocus
-                                                    className="taskInput"
-                                                />
-                                            ) : (
-                                                <div className="taskText" onClick={() => handleEditContent(cellKey, task.id)}>
-                                                    {task.text}
-                                                </div>
-                                            )}
-                                            <div className="gridCellButtons">
-                                                <button 
-                                                    className="editButton" 
-                                                    onClick={() => handleEditContent(cellKey, task.id)}
-                                                >
-                                                    ✎
-                                                </button>
-                                                <button 
-                                                    className="removeButton" 
-                                                    onClick={() => handleRemoveContent(cellKey, task.id)}
-                                                >
-                                                    ×
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                    <button className="addButton" onClick={() => handleAddContent(cellKey, classIndex, dayIndex)}>+</button>
+                        <section className={`courseRow ${showDetails ? 'showDetails' : 'hideDetails'}`}>
+                            <div className="courseGrid">
+                                <div className="courseCode">{cls.courseCode}</div>
+                                <div className={`courseDetails ${showDetails ? 'show' : 'hide'}`}>
+                                    <div>{cls.className}</div>
+                                    <hr/>
+                                    <div>&#128205;{cls.location}</div>
+                                    <div>&#128197;{abbreviateDays(cls.meetingDays)}</div>
+                                    <div>&#128338;{cls.startTime} - {cls.endTime}</div>
                                 </div>
-                            );
-                        })}
+                            </div>
+                            {selectedDayIndices.map((dayIndex) => {
+                                const cellKey = `${classIndex}-${dayIndex}`;
+                                return (
+                                    <div key={cellKey} className="gridCell">
+                                        {Array.isArray(cellsContent[cellKey]) && cellsContent[cellKey].map((task) => (
+                                            <div key={task.id} className={`contentWrapper cellItem ${task.completed ? 'completed' : ''}`}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={task.completed}
+                                                    onChange={() => handleToggleComplete(cellKey, task.id)}
+                                                    className="taskCheckbox"
+                                                />
+                                                {task.editing ? (
+                                                    <input
+                                                        type="text"
+                                                        value={inputValues[cellKey] || ''}
+                                                        onChange={(e) => handleInputChange(cellKey, task.id, e.target.value)}
+                                                        onBlur={() => handleInputBlur(cellKey, task.id)}
+                                                        autoFocus
+                                                        className="taskInput"
+                                                    />
+                                                ) : (
+                                                    <div className="taskText" onClick={() => handleEditContent(cellKey, task.id)}>
+                                                        {task.text}
+                                                    </div>
+                                                )}
+                                                <div className="gridCellButtons">
+                                                    <button 
+                                                        className="editButton" 
+                                                        onClick={() => handleEditContent(cellKey, task.id)}
+                                                    >
+                                                        ✎
+                                                    </button>
+                                                    <button 
+                                                        className="removeButton" 
+                                                        onClick={() => handleRemoveContent(cellKey, task.id)}
+                                                    >
+                                                        ×
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        <button className="addButton" onClick={() => handleAddContent(cellKey, classIndex, dayIndex)}>+</button>
+                                    </div>
+                                );
+                            })}
+                        </section>
                     </React.Fragment>
                 ))}
             </div>

@@ -38,6 +38,11 @@
     font-size: 0.8em;
 }
 
+.courseRow {
+    grid-column: 1/7;
+    display: grid;
+}
+
 .courseCode {
     writing-mode: vertical-lr;
     text-orientation: mixed;
@@ -60,6 +65,7 @@
     padding: 10px;
     padding-bottom: 20px;
     position: relative;
+    margin: 0px 5px;
 }
 
 .gridCellButtons {
@@ -156,7 +162,7 @@
 }
 
 .plannerGrid.hideDetails {
-    grid-template-columns: 50px repeat(calc(var(--columns-count) - 1), 1fr);
+    grid-template-columns: 60px repeat(calc(var(--columns-count) - 1), 1fr);
 }
 
 .courseDetails.show {
@@ -165,4 +171,12 @@
 
 .courseDetails.hide {
     display: none;
+}
+
+.courseRow.showDetails {
+    grid-template-columns: repeat(var(--columns-count), 1fr);
+}
+
+.courseRow.hideDetails {
+    grid-template-columns: 60px repeat(calc(var(--columns-count) - 1), 1fr);
 }
