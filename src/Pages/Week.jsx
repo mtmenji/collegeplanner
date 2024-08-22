@@ -48,10 +48,15 @@ const Week = () => {
     const [showDetails, setShowDetails] = useState(false);
     const [cellsContent, setCellsContent] = useState({});
     const [inputValues, setInputValues] = useState({});
+    const [selectedClass, setSelectedClass] = useState('');
     const firestore = getFirestore();
 
     const toggleDetails = () => {
         setShowDetails(prev => !prev);
+    };
+
+    const handleClassChange = (event) => {
+        setSelectedClass(event.target.value);
     };
 
     const handleAddContent = (cellKey) => {
@@ -301,6 +306,12 @@ const Week = () => {
         <div className="weekPage">
             <PlannerNav plannerId={id}/>
             <div className={`plannerGrid ${showDetails ? 'showDetails' : 'hideDetails'}`}>
+                <select className="classDropdown" onChange={handleClassChange} value={selectedClass}>
+                    <option value="">All Classes</option>
+                    {planner.classes.map((cls, index) => (
+                        <option key={index} value={cls.name}>{cls.className}</option>
+                    ))}
+                </select>
                 <button className="gridHeader" onClick={toggleDetails}>
                     {showDetails ? 'Hide' : 'Show'}
                 </button>
@@ -310,7 +321,7 @@ const Week = () => {
                         <div className="dayDate">{formatDate(weekDates[index])}</div>
                     </div>
                 ))}
-                {planner.classes && planner.classes.map((cls, classIndex) => (
+                {planner.classes && planner.classes.filter(cls => selectedClass === "" || cls.className === selectedClass).map((cls, classIndex) => (
                     <React.Fragment key={classIndex}>
                         <section className={`courseRow ${showDetails ? 'showDetails' : 'hideDetails'}`}>
                             <div className="courseGrid">
@@ -327,6 +338,7 @@ const Week = () => {
                                 const cellKey = `${classIndex}-${dayIndex}`;
                                 return (
                                     <div key={cellKey} className="gridCell">
+                                        <h2 className="dayOfWeekMobile">{daysOfWeek[dayIndex]} ({formatDate(weekDates[dayIndex])})</h2>
                                         {Array.isArray(cellsContent[cellKey]) && cellsContent[cellKey].map((task) => (
                                             <div key={task.id} className={`contentWrapper cellItem ${task.completed ? 'completed' : ''}`}>
                                                 <input

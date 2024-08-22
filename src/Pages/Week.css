@@ -111,6 +111,10 @@
     margin-right: 5px;
 }
 
+.taskText {
+    padding: 0px 5px;
+}
+
 .contentInput {
     flex-grow: 1;
     margin-right: 5px;
@@ -158,36 +162,88 @@
 }
 
 /* Hide/Show Button *********************/
-.plannerGrid.showDetails {
-    grid-template-columns: repeat(var(--columns-count), 1fr);
+@media(min-width:1280px) {
+    .plannerGrid.showDetails {
+        grid-template-columns: repeat(var(--columns-count), 1fr);
+    }
+    
+    .plannerGrid.hideDetails {
+        grid-template-columns: 60px repeat(calc(var(--columns-count) - 1), 1fr);
+    }
+    
+    .courseDetails.show {
+        display: block;
+    }
+    
+    .courseDetails.hide {
+        display: none;
+    }
+    
+    .courseRow.showDetails {
+        grid-template-columns: repeat(var(--columns-count), 1fr);
+    }
+    
+    .courseRow.hideDetails {
+        grid-template-columns: 60px repeat(calc(var(--columns-count) - 1), 1fr);
+    }
+    
+    .classDropdown {
+        display: none;
+    }
+
+    .dayOfWeekMobile {
+        display: none;
+    }
 }
 
-.plannerGrid.hideDetails {
-    grid-template-columns: 60px repeat(calc(var(--columns-count) - 1), 1fr);
-}
-
-.courseDetails.show {
-    display: block;
-}
-
-.courseDetails.hide {
-    display: none;
-}
-
-.courseRow.showDetails {
-    grid-template-columns: repeat(var(--columns-count), 1fr);
-}
-
-.courseRow.hideDetails {
-    grid-template-columns: 60px repeat(calc(var(--columns-count) - 1), 1fr);
-}
 
 /* Mobile View */
-@media(max-width: 1280px) {
+@media(max-width: 1279px) {
     .gridHeader {
         display: none;
     }
-     .dayHeader {
-        display: none;
-     }
+
+    .dayHeader {
+    display: none;
+    }
+
+    .classDropdown {
+        display: block;
+        grid-column: 1/7;
+        text-align: center;
+
+        padding: 8px; /* Padding inside the dropdown */
+        border: 1px solid #ccc; /* Border color and width */
+        border-radius: 4px; /* Rounded corners */
+        background-color: #fff; /* Background color */
+        cursor: pointer; /* Cursor style on hover */
+        transition: border-color 0.3s ease; /* Smooth border color transition */
+    }
+
+    .courseRow {
+        grid-template-columns: 1fr;
+    }
+
+    .courseGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .courseCode {
+        writing-mode: horizontal-tb;
+        border: none;
+    }
+
+    .courseDetails {
+        text-align: center;
+    }
+
+    .gridCell {
+        margin-bottom: 10px;
+    }
+
+    .dayOfWeekMobile {
+        display: block;
+        text-align: center;
+        margin: 0 0 10px 0;
+    }
 }
