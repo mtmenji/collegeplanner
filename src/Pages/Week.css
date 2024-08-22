@@ -41,6 +41,7 @@
 .courseRow {
     grid-column: 1/7;
     display: grid;
+    overflow-wrap: anywhere;
 }
 
 .courseCode {
@@ -179,4 +180,14 @@
 
 .courseRow.hideDetails {
     grid-template-columns: 60px repeat(calc(var(--columns-count) - 1), 1fr);
+}
+
+/* Mobile View */
+@media(max-width: 1280px) {
+    .gridHeader {
+        display: none;
+    }
+     .dayHeader {
+        display: none;
+     }
 }
