@@ -13,4 +13,11 @@
 
 select#class-select {
     margin-bottom: 2vh;
+    width: 100%;
+    padding: 8px; /* Padding inside the dropdown */
+        border: 1px solid #ccc; /* Border color and width */
+        border-radius: 4px; /* Rounded corners */
+        background-color: #fff; /* Background color */
+        cursor: pointer; /* Cursor style on hover */
+        transition: border-color 0.3s ease; /* Smooth border color transition */
 }
