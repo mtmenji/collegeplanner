@@ -28,7 +28,7 @@ function App() {
         <PlannerProvider>
           <Header/>
           <main className='content'>
-            <Router>
+            <Router basename={process.env.PUBLIC_URL}>
               <Routes>
                 <Route path='/' element={<Login/>}/>
                 <Route path='/register' element={<Register/>}/>
